@@ -17,8 +17,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,20 +25,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.absolutefresh.sales.R
 import com.absolutefresh.sales.data.model.UserRole
 import com.absolutefresh.sales.ui.auth.SignInScreenState
 import com.absolutefresh.sales.ui.theme.GreenPrimary
-import com.absolutefresh.sales.ui.theme.OnSurfaceText
 import com.absolutefresh.sales.ui.theme.OnSurfaceVariantText
-import com.absolutefresh.sales.ui.theme.SaffronSecondary
 import com.absolutefresh.sales.ui.theme.SurfaceCanvas
 import kotlinx.coroutines.delay
 
@@ -54,7 +48,7 @@ fun SplashScreen(
     // Pulse animation for subtle logo breathing effect
     val infiniteTransition = rememberInfiniteTransition(label = "SplashTransition")
     val scale by infiniteTransition.animateFloat(
-        initialValue = 0.96f,
+        initialValue = 0.97f,
         targetValue = 1.02f,
         animationSpec = infiniteRepeatable(
             animation = tween(1200, easing = FastOutSlowInEasing),
@@ -65,7 +59,7 @@ fun SplashScreen(
 
     LaunchedEffect(authState) {
         // Minimum branded display time to avoid jarring flash
-        delay(800)
+        delay(900)
         when (authState) {
             is SignInScreenState.Authenticated -> {
                 if (authState.role == UserRole.DRIVER) {
@@ -95,42 +89,17 @@ fun SplashScreen(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.padding(32.dp)
         ) {
-            // Branded Emblem
-            Box(
+            // Official Absolute Fresh Master Brand Logo
+            Image(
+                painter = painterResource(id = R.drawable.logo_absolute_fresh_master),
+                contentDescription = "Absolute Fresh Brand Logo",
                 modifier = Modifier
-                    .size(96.dp)
-                    .scale(scale)
-                    .background(GreenPrimary, RoundedCornerShape(24.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                        text = "AF",
-                        color = Color.White,
-                        fontSize = 38.sp,
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = 1.sp
-                    )
-                    Box(
-                        modifier = Modifier
-                            .width(28.dp)
-                            .height(3.dp)
-                            .background(SaffronSecondary, RoundedCornerShape(2.dp))
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Brand Title & Subtitle
-            Text(
-                text = "Absolute Fresh",
-                style = MaterialTheme.typography.headlineLarge,
-                color = OnSurfaceText,
-                fontWeight = FontWeight.Bold
+                    .fillMaxWidth(0.85f)
+                    .scale(scale),
+                contentScale = ContentScale.Fit
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Text(
                 text = "Field Sales & Dispatch Ops",
@@ -157,7 +126,7 @@ fun SplashScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Fresh Batter & Chutney • Lucknow, UP",
+                text = "Fresh Fermented Batter & Chutney • Lucknow, UP",
                 style = MaterialTheme.typography.labelMedium,
                 color = OnSurfaceVariantText
             )

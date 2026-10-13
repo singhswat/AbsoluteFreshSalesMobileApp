@@ -123,29 +123,17 @@ fun SignInForm(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // App Header & Branding
-        Box(
+        // Official Master Brand Logo
+        androidx.compose.foundation.Image(
+            painter = androidx.compose.ui.res.painterResource(id = com.absolutefresh.sales.R.drawable.logo_absolute_fresh_master),
+            contentDescription = "Absolute Fresh Logo",
             modifier = Modifier
-                .size(64.dp)
-                .background(GreenPrimary, RoundedCornerShape(12.dp)),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "AF",
-                color = Color.White,
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = "Absolute Fresh",
-            style = MaterialTheme.typography.headlineLarge,
-            color = OnSurfaceText,
-            fontWeight = FontWeight.Bold
+                .fillMaxWidth(0.75f)
+                .padding(horizontal = 16.dp),
+            contentScale = androidx.compose.ui.layout.ContentScale.Fit
         )
+
+        Spacer(modifier = Modifier.height(12.dp))
 
         Text(
             text = "Field Sales & Dispatch Ops",

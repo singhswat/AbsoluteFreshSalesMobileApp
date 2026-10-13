@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;background-color:#fbf8ff;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: 'class', theme: { extend: { colors: { 'tertiary-container': '#b40011', 'surface-container': '#eeedf7', 'outline-variant': '#bfc9bd', 'surface-dim': '#dad9e3', 'on-surface-variant': '#404940', 'on-error': '#ffffff', 'surface-container-highest': '#e3e1ec', 'secondary-container': '#fe932c', 'on-error-container': '#93000a', 'inverse-primary': '#8bd79b', 'on-primary-fixed-variant': '#005226', 'tertiary-fixed': '#ffdad6', 'on-tertiary-container': '#ffbfb8', 'error': '#ba1a1a', 'on-primary-container': '#93e0a2', 'primary-fixed-dim': '#8bd79b', 'amber-warning': '#F59E0B', 'on-surface': '#1a1b22', 'on-secondary-fixed-variant': '#6e3900', 'on-secondary-fixed': '#2f1500', 'surface-container-lowest': '#ffffff', 'on-tertiary': '#ffffff', 'on-tertiary-fixed-variant': '#93000b', 'on-secondary-container': '#663500', 'on-secondary': '#ffffff', 'tertiary-fixed-dim': '#ffb4ab', 'surface-container-low': '#f4f2fd', 'admin-crimson': '#CC0000', 'surface-card': '#FFFFFF', 'inverse-on-surface': '#f1effa', 'border-subtle': '#E2E8F0', 'surface-container-high': '#e8e7f1', 'inverse-surface': '#2f3038', 'secondary-fixed': '#ffdcc3', 'error-container': '#ffdad6', 'surface-variant': '#e3e1ec', 'on-primary': '#ffffff', 'surface': '#fbf8ff', 'surface-bright': '#fbf8ff', 'secondary-fixed-dim': '#ffb77d', 'primary': '#004c22', 'on-background': '#1a1b22', 'background': '#fbf8ff', 'primary-container': '#166534', 'on-tertiary-fixed': '#410002', 'surface-tint': '#1f6c3a', 'secondary': '#904d00', 'outline': '#707a6f', 'surface-canvas': '#F8FAFC', 'tertiary': '#88000a', 'primary-fixed': '#a6f4b5', 'on-primary-fixed': '#00210b' }, borderRadius: { 'DEFAULT': '0.125rem', 'lg': '0.25rem', 'xl': '0.5rem', 'full': '0.75rem' }, spacing: { 'margin-desktop': '2rem', 'margin': '1rem', 'gutter-desktop': '1.5rem', 'gutter': '1rem', 'space-xl': '2rem', 'space-sm': '0.5rem', 'space-xs': '0.25rem', 'space-md': '1rem', 'space-lg': '1.5rem' }, fontFamily: { 'body-lg': ['Inter'], 'label-lg': ['Inter'], 'headline-lg': ['Inter'], 'label-sm': ['Inter'], 'headline-xl-mobile': ['Inter'], 'body-md': ['Inter'], 'label-md': ['Inter'], 'headline-sm': ['Inter'], 'headline-md': ['Inter'], 'headline-xl': ['Inter'], 'body-sm': ['Inter'], 'headline-lg-mobile': ['Inter'] }, fontSize: { 'body-lg': ['16px', { lineHeight: '24px', fontWeight: '400' }], 'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.01em', fontWeight: '600' }], 'headline-lg': ['30px', { lineHeight: '38px', letterSpacing: '-0.01em', fontWeight: '600' }], 'label-sm': ['10px', { lineHeight: '14px', letterSpacing: '0.04em', fontWeight: '600' }], 'headline-xl-mobile': ['28px', { lineHeight: '36px', letterSpacing: '-0.01em', fontWeight: '700' }], 'body-md': ['14px', { lineHeight: '20px', fontWeight: '400' }], 'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.02em', fontWeight: '500' }], 'headline-sm': ['16px', { lineHeight: '24px', fontWeight: '600' }], 'headline-md': ['20px', { lineHeight: '28px', fontWeight: '600' }], 'headline-xl': ['36px', { lineHeight: '44px', letterSpacing: '-0.02em', fontWeight: '700' }], 'body-sm': ['12px', { lineHeight: '16px', fontWeight: '400' }], 'headline-lg-mobile': ['24px', { lineHeight: '32px', fontWeight: '600' }] } } } };</script></head><body class="bg-surface font-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><img alt="Absolute Fresh Logo.png" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WAJxnpoXhByom4bBBKdfe_WtWekCX8WY_4qw3UQ7BdVU99yilPdWpVgqGiISGdn1ODpjogA3lgVA0XFXWAuvtFWeHSnLp0iJ-w0wyLvFbHw_3I6rrhkTmQp9gs6Po4YivlR--FOvY-oqzX_u4sQvBdojW_aum8vlQAiksAt2hiwDGBPVGlXZXu8GgN8TuvfscJkdDxE5ERSMfEU1vQxCbneaKnA4Hu34D1-tRw2IndJbEhc_Sl9GcMOXzKJnmCjNpCi2E48g3t"/><div class="flex flex-col min-w-0"><div class="flex items-center gap-space-xs"><span class="font-label-lg text-label-lg text-primary-container truncate">Absolute Fresh</span><span class="px-1.5 py-0.5 rounded bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm">Field</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-primary-container inline-block"></span><span class="font-label-sm text-label-sm text-on-surface-variant truncate">Sales Rep • Lucknow East</span></div></div></div><div class="flex items-center gap-space-xs"><button class="min-h-[44px] min-w-[44px] px-2 flex items-center justify-center gap-1 rounded bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-[18px] text-primary-container">calendar_today</span><span class="font-label-sm text-label-sm">Today</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-20 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full px-margin pb-6 gap-space-md">
+<!-- Interactive View Switcher Tabs -->
+<div class="flex items-center p-1 bg-surface-container rounded-xl w-full shadow-sm">
+<button class="flex-1 py-2.5 px-3 rounded-lg text-center font-label-md text-label-md bg-surface-container-lowest text-primary-container shadow-sm font-semibold transition-all" id="tab-cash" onclick="switchTab('cash')">
+      Cash Received (Held)
+    </button>
+<button class="flex-1 py-2.5 px-3 rounded-lg text-center font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all" id="tab-settle" onclick="switchTab('settlements')">
+      Shop Stock &amp; Settlements
+    </button>
+</div>
+<!-- Shelf Life Freshness Warning Banner (Operational 10-day decay window awareness) -->
+<div class="flex items-start gap-space-sm p-3.5 bg-amber-100/70 text-on-surface rounded-xl shadow-sm">
+<div class="flex items-center justify-center w-8 h-8 rounded-full bg-amber-warning text-surface-container-lowest shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-1">
+<span class="font-label-md text-label-md text-secondary font-bold">Shelf Life Decay Alert (Day 8+)</span>
+<span class="px-2 py-0.5 rounded-full bg-amber-200 text-on-secondary-container font-label-sm text-label-sm">2 Outlets</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 leading-snug">
+        Packs nearing 8 days shelf life in Gomti Nagar route. Reconcile unsold batter inventory before logging full replacements.
+      </p>
+</div>
+</div>
+<!-- Cash in Hand KPI Hero Card -->
+<div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-primary-container to-primary text-on-primary p-space-md shadow-md">
+<div class="absolute -right-6 -bottom-6 w-32 h-32 rounded-full bg-white/5 pointer-events-none"></div>
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-primary-container">Total Held Physical Cash</span>
+<div class="flex items-baseline gap-1 mt-1">
+<span class="font-headline-xl-mobile text-headline-xl-mobile font-bold tracking-tight">₹14,250</span>
+<span class="font-label-sm text-label-sm text-on-primary-container">.00</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-lowest/15 backdrop-blur-md">
+<span class="w-2 h-2 rounded-full bg-amber-warning animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-on-primary font-medium">Un-cleared / In Hand</span>
+</div>
+</div>
+<!-- Quick Micro Stats Bar -->
+<div class="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-white/10">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-primary-container">Total Today Handed</span>
+<span class="font-label-lg text-label-lg font-semibold text-white">₹24,130</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-primary-container">UPI Digital Route</span>
+<span class="font-label-lg text-label-lg font-semibold text-white">₹9,880</span>
+</div>
+</div>
+<button class="w-full mt-4 min-h-[44px] py-2.5 px-4 bg-surface-container-lowest text-primary-container font-label-lg text-label-lg rounded-lg shadow-sm font-semibold flex items-center justify-center gap-2 hover:bg-surface-container-low active:scale-[0.99] transition-all" onclick="triggerClearanceModal()" type="button">
+<span class="material-symbols-outlined text-[19px]">account_balance_wallet</span>
+<span>Deposit to Admin / UPI Settlement</span>
+</button>
+</div>
+<!-- Quick Record Cash Received Form Card -->
+<div class="bg-surface-card rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between pb-1 border-b border-surface-container-high">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-primary-fixed flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-[18px]">add_card</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Record Cash Receipt</h3>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">BRD STK-12 Ref</span>
+</div>
+<!-- Outlet Selector -->
+<div class="flex flex-col gap-1.5 mt-1">
+<label class="font-label-md text-label-md text-on-surface-variant font-medium">Select Retailer / Outlet</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[20px] pointer-events-none">storefront</span>
+<select class="w-full min-h-[48px] pl-10 pr-10 bg-surface-canvas rounded-lg text-on-surface font-body-md text-body-md appearance-none focus:outline-none focus:bg-surface-container-lowest shadow-sm" id="outlet-select">
+<option selected="">Annapurna Daily Needs (Gomti Nagar)</option>
+<option>Family Bazaar Supermarket (Hazratganj)</option>
+<option>Balaji Superstore (Indira Nagar)</option>
+<option>Sharma Kirana Store (Mahanagar)</option>
+<option>Sri Ram General Mart (Aliganj)</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 text-on-surface-variant text-[20px] pointer-events-none">arrow_drop_down</span>
+</div>
+</div>
+<!-- Payment Mode Switcher -->
+<div class="flex flex-col gap-1.5 mt-1">
+<label class="font-label-md text-label-md text-on-surface-variant font-medium">Payment Mode</label>
+<div class="grid grid-cols-3 gap-2">
+<button class="min-h-[44px] flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md font-semibold shadow-sm transition-all" id="mode-cash" onclick="selectPaymentMode('cash')" type="button">
+<span class="material-symbols-outlined text-[18px]">payments</span>
+<span>Cash</span>
+</button>
+<button class="min-h-[44px] flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg bg-surface-container text-on-surface-variant font-label-md text-label-md transition-all" id="mode-upi" onclick="selectPaymentMode('upi')" type="button">
+<span class="material-symbols-outlined text-[18px]">qr_code_2</span>
+<span>UPI QR</span>
+</button>
+<button class="min-h-[44px] flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg bg-surface-container text-on-surface-variant font-label-md text-label-md transition-all" id="mode-cheque" onclick="selectPaymentMode('cheque')" type="button">
+<span class="material-symbols-outlined text-[18px]">fact_check</span>
+<span>Cheque</span>
+</button>
+</div>
+</div>
+<!-- Amount Input with Quick Chips -->
+<div class="flex flex-col gap-1.5 mt-1">
+<div class="flex justify-between items-center">
+<label class="font-label-md text-label-md text-on-surface-variant font-medium">Collected Amount (₹)</label>
+<span class="font-label-sm text-label-sm text-secondary font-medium">Ledger Due: ₹2,450</span>
+</div>
+<div class="relative flex items-center">
+<span class="absolute left-3.5 font-headline-sm text-headline-sm text-on-surface-variant font-semibold">₹</span>
+<input class="w-full min-h-[48px] pl-8 pr-4 bg-surface-canvas rounded-lg text-on-surface font-headline-sm text-headline-sm font-semibold focus:outline-none focus:bg-surface-container-lowest shadow-sm" id="cash-amount" placeholder="0" type="number" value="2500"/>
+</div>
+<!-- Quick Amount Preset Chips -->
+<div class="flex flex-wrap items-center gap-1.5 mt-1">
+<button class="px-2.5 py-1 rounded bg-surface-container text-on-surface font-label-sm text-label-sm hover:bg-surface-container-high active:scale-95 transition-all" onclick="setAmount(500, true)" type="button">+₹500</button>
+<button class="px-2.5 py-1 rounded bg-surface-container text-on-surface font-label-sm text-label-sm hover:bg-surface-container-high active:scale-95 transition-all" onclick="setAmount(1000, true)" type="button">+₹1,000</button>
+<button class="px-2.5 py-1 rounded bg-surface-container text-on-surface font-label-sm text-label-sm hover:bg-surface-container-high active:scale-95 transition-all" onclick="setAmount(2000, true)" type="button">+₹2,000</button>
+<button class="px-2.5 py-1 rounded bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm font-semibold hover:bg-primary-fixed-dim active:scale-95 transition-all" onclick="setAmount(2450, false)" type="button">Full Due: ₹2,450</button>
+</div>
+</div>
+<!-- Receipt / Notes Input -->
+<div class="flex flex-col gap-1.5 mt-1">
+<label class="font-label-md text-label-md text-on-surface-variant font-medium">Invoice Ref / Collector Note</label>
+<input class="w-full min-h-[44px] px-3.5 bg-surface-canvas rounded-lg text-on-surface font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest shadow-sm" id="cash-ref" placeholder="e.g. Inv #, GPay TXN, or notes" type="text" value="Payment for INV-2610-014"/>
+</div>
+<!-- Submit Primary Button -->
+<button class="w-full min-h-[48px] mt-2 py-3 px-4 bg-primary-container text-on-primary font-label-lg text-label-lg rounded-lg shadow-sm font-semibold flex items-center justify-center gap-2 active:bg-primary hover:shadow transition-all" onclick="logCashEntry()" type="button">
+<span class="material-symbols-outlined text-[20px]">task_alt</span>
+<span>Log Cash Entry</span>
+</button>
+</div>
+<!-- Today's Cash Ledger List Header -->
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container text-[20px]">history_edu</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Today's Route Ledger</h3>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">3 Transactions</span>
+</div>
+<!-- Ledger Items Stream -->
+<div class="flex flex-col gap-2.5" id="ledger-list">
+<!-- Item 1: Sharma Kirana -->
+<div class="bg-surface-card rounded-xl p-3.5 shadow-sm flex flex-col gap-2">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg text-on-surface truncate font-semibold">Sharma Kirana Store</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">11:15 AM • Cash in bag</span>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">₹1,980</span>
+<span class="inline-flex items-center gap-1 font-label-sm text-label-sm px-2 py-0.5 rounded bg-amber-100 text-on-secondary-container mt-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-warning"></span>
+            Held
+          </span>
+</div>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant pt-2 border-t border-surface-container-high font-body-sm text-body-sm">
+<span class="truncate">Inv: #INV-2610-019 (Full)</span>
+<button class="text-primary-container font-label-sm text-label-sm font-semibold flex items-center gap-0.5">
+<span>Receipt</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Item 2: Family Bazaar Supermarket -->
+<div class="bg-surface-card rounded-xl p-3.5 shadow-sm flex flex-col gap-2">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-9 h-9 rounded-lg bg-primary-fixed flex items-center justify-center text-on-primary-fixed-variant shrink-0">
+<span class="material-symbols-outlined text-[20px]">qr_code_scanner</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg text-on-surface truncate font-semibold">Family Bazaar Supermarket</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">10:45 AM • UPI Merchant QR</span>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">₹3,400</span>
+<span class="inline-flex items-center gap-1 font-label-sm text-label-sm px-2 py-0.5 rounded bg-green-100 text-on-primary-container mt-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+            UPI Verified
+          </span>
+</div>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant pt-2 border-t border-surface-container-high font-body-sm text-body-sm">
+<span class="truncate font-mono text-[11px]">Ref: UPI-98214-FZ2</span>
+<button class="text-primary-container font-label-sm text-label-sm font-semibold flex items-center gap-0.5">
+<span>View Slip</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Item 3: Balaji Superstore -->
+<div class="bg-surface-card rounded-xl p-3.5 shadow-sm flex flex-col gap-2">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg text-on-surface truncate font-semibold">Balaji Superstore</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">09:30 AM • Cash collected</span>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">₹4,500</span>
+<span class="inline-flex items-center gap-1 font-label-sm text-label-sm px-2 py-0.5 rounded bg-amber-100 text-on-secondary-container mt-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-warning"></span>
+            Held
+          </span>
+</div>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant pt-2 border-t border-surface-container-high font-body-sm text-body-sm">
+<span class="truncate">Inv: #INV-2610-011 (Part 1/2)</span>
+<button class="text-primary-container font-label-sm text-label-sm font-semibold flex items-center gap-0.5">
+<span>Receipt</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Route Operational Actions -->
+<div class="grid grid-cols-2 gap-space-sm mt-2">
+<button class="min-h-[48px] py-2.5 px-3 rounded-lg bg-surface-container-high text-on-surface font-label-md text-label-md font-semibold flex items-center justify-center gap-1.5 hover:bg-surface-container active:scale-[0.98] transition-all" onclick="exportSummaryToast()" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary">file_download</span>
+<span class="truncate">Export Summary</span>
+</button>
+<button class="min-h-[48px] py-2.5 px-3 rounded-lg bg-secondary-container text-on-secondary-container font-label-md text-label-md font-semibold flex items-center justify-center gap-1.5 hover:opacity-90 active:scale-[0.98] transition-all shadow-sm" onclick="requestClearanceToast()" type="button">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span class="truncate">Request Clearance</span>
+</button>
+</div>
+<!-- Notification Toast Container -->
+<div class="fixed top-24 left-4 right-4 z-50 transform -translate-y-12 opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-2 p-3.5 bg-inverse-surface text-inverse-on-surface rounded-xl shadow-lg" id="toast-banner">
+<span class="material-symbols-outlined text-[20px] text-primary-fixed" id="toast-icon">check_circle</span>
+<span class="font-body-md text-body-md flex-1" id="toast-text">Transaction recorded successfully!</span>
+</div>
+</div>
+<script>
+  let currentMode = 'cash';
+
+  function switchTab(type) {
+    const cashBtn = document.getElementById('tab-cash');
+    const settleBtn = document.getElementById('tab-settle');
+    if (type === 'cash') {
+      cashBtn.className = "flex-1 py-2.5 px-3 rounded-lg text-center font-label-md text-label-md bg-surface-container-lowest text-primary-container shadow-sm font-semibold transition-all";
+      settleBtn.className = "flex-1 py-2.5 px-3 rounded-lg text-center font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all";
+      showToast("Viewing Cash In Hand Ledger");
+    } else {
+      settleBtn.className = "flex-1 py-2.5 px-3 rounded-lg text-center font-label-md text-label-md bg-surface-container-lowest text-primary-container shadow-sm font-semibold transition-all";
+      cashBtn.className = "flex-1 py-2.5 px-3 rounded-lg text-center font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all";
+      showToast("Shop Stock & Settlements mode selected");
+    }
+  }
+
+  function selectPaymentMode(mode) {
+    currentMode = mode;
+    const modes = ['cash', 'upi', 'cheque'];
+    modes.forEach(m => {
+      const btn = document.getElementById(`mode-${m}`);
+      if (m === mode) {
+        btn.className = "min-h-[44px] flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md font-semibold shadow-sm transition-all";
+      } else {
+        btn.className = "min-h-[44px] flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg bg-surface-container text-on-surface-variant font-label-md text-label-md transition-all";
+      }
+    });
+  }
+
+  function setAmount(val, isDelta) {
+    const input = document.getElementById('cash-amount');
+    const current = parseFloat(input.value) || 0;
+    if (isDelta) {
+      input.value = current + val;
+    } else {
+      input.value = val;
+    }
+    input.classList.add('bg-primary-fixed/20');
+    setTimeout(() => input.classList.remove('bg-primary-fixed/20'), 250);
+  }
+
+  function logCashEntry() {
+    const amount = document.getElementById('cash-amount').value;
+    const outlet = document.getElementById('outlet-select').value.split('(')[0].trim();
+    if (!amount || amount <= 0) {
+      showToast("Please specify a valid collection amount", "error");
+      return;
+    }
+
+    const ledgerList = document.getElementById('ledger-list');
+    const newEntry = document.createElement('div');
+    newEntry.className = "bg-surface-card rounded-xl p-3.5 shadow-sm flex flex-col gap-2 transform transition-all duration-300";
+    newEntry.innerHTML = `
+      <div class="flex items-start justify-between">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="w-9 h-9 rounded-lg ${currentMode === 'cash' ? 'bg-surface-container text-primary-container' : 'bg-primary-fixed text-on-primary-fixed-variant'} flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[20px]">${currentMode === 'cash' ? 'payments' : (currentMode === 'upi' ? 'qr_code_scanner' : 'fact_check')}</span>
+          </div>
+          <div class="flex flex-col min-w-0">
+            <span class="font-label-lg text-label-lg text-on-surface truncate font-semibold">${outlet}</span>
+            <span class="font-body-sm text-body-sm text-on-surface-variant">Just now • Mode: ${currentMode.toUpperCase()}</span>
+          </div>
+        </div>
+        <div class="flex flex-col items-end shrink-0">
+          <span class="font-headline-sm text-headline-sm text-on-surface font-bold">₹${Number(amount).toLocaleString('en-IN')}</span>
+          <span class="inline-flex items-center gap-1 font-label-sm text-label-sm px-2 py-0.5 rounded bg-amber-100 text-on-secondary-container mt-0.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-warning"></span>
+            Held
+          </span>
+        </div>
+      </div>
+      <div class="flex items-center justify-between text-on-surface-variant pt-2 border-t border-surface-container-high font-body-sm text-body-sm">
+        <span class="truncate">${document.getElementById('cash-ref').value || 'Payment log generated'}</span>
+        <button class="text-primary-container font-label-sm text-label-sm font-semibold flex items-center gap-0.5">
+          <span>Receipt</span>
+          <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+        </button>
+      </div>
+    `;
+
+    ledgerList.insertBefore(newEntry, ledgerList.firstChild);
+    showToast(`Logged ₹${Number(amount).toLocaleString('en-IN')} from ${outlet}`);
+    document.getElementById('cash-amount').value = '';
+  }
+
+  function exportSummaryToast() {
+    showToast("Compiling Daily Handover PDF & Ledger CSV...");
+  }
+
+  function requestClearanceToast() {
+    showToast("Clearance request sent to Plant Admin Desk");
+  }
+
+  function triggerClearanceModal() {
+    showToast("Initiating UPI Admin Handover OTP Prompt");
+  }
+
+  function showToast(message, iconType = "check") {
+    const toast = document.getElementById('toast-banner');
+    const text = document.getElementById('toast-text');
+    const icon = document.getElementById('toast-icon');
+
+    text.innerText = message;
+    if (iconType === 'error') {
+      icon.innerText = 'error';
+      icon.className = 'material-symbols-outlined text-[20px] text-tertiary-fixed';
+    } else {
+      icon.innerText = 'check_circle';
+      icon.className = 'material-symbols-outlined text-[20px] text-primary-fixed';
+    }
+
+    toast.classList.remove('-translate-y-12', 'opacity-0', 'pointer-events-none');
+    toast.classList.add('translate-y-0', 'opacity-100');
+
+    setTimeout(() => {
+      toast.classList.add('-translate-y-12', 'opacity-0', 'pointer-events-none');
+      toast.classList.remove('translate-y-0', 'opacity-100');
+    }, 2800);
+  }
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(15,23,42,0.06)]" data-active-classes="text-primary-container font-bold"><div class="flex justify-around items-center h-16 px-space-xs"><a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] flex-1 py-1 text-on-surface-variant hover:text-primary-container transition-colors" data-path="beat" href="#"><span class="material-symbols-outlined text-[22px]">route</span><span class="font-label-sm text-label-sm mt-0.5">Beat</span></a><a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] flex-1 py-1 text-on-surface-variant hover:text-primary-container transition-colors" data-path="orders" href="#"><span class="material-symbols-outlined text-[22px]">receipt_long</span><span class="font-label-sm text-label-sm mt-0.5">Orders</span></a><a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] flex-1 py-1 text-on-surface-variant hover:text-primary-container transition-colors" data-path="deliveries-cash" href="#"><span class="material-symbols-outlined text-[22px]">payments</span><span class="font-label-sm text-label-sm mt-0.5">Deliveries &amp; Cash</span></a><a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] flex-1 py-1 text-on-surface-variant hover:text-primary-container transition-colors" data-path="profile-stock" href="#"><span class="material-symbols-outlined text-[22px]">inventory_2</span><span class="font-label-sm text-label-sm mt-0.5">Profile &amp; Stock</span></a></div></nav></body></html>

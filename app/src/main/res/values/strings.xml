@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Absolute Fresh</string>
+    <string name="sign_in">Sign In</string>
+    <string name="phone_or_email">Phone number or email</string>
+    <string name="password">Password</string>
+    <string name="working_offline">Working Offline</string>
+    <string name="pending_sync">Pending Sync</string>
+</resources>

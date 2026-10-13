@@ -1,0 +1,58 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:pivotX="54"
+        android:pivotY="54">
+        <!-- Circular Soft Backdrop Badge in Safe Zone -->
+        <path
+            android:fillColor="#00000000"
+            android:strokeColor="#FE932C"
+            android:strokeWidth="1.5"
+            android:pathData="M54,26 A28,28 0 1,1 53.9,26 Z" />
+
+        <!-- Culinary Leaf / Sprout Motif Top Accent -->
+        <path
+            android:fillColor="#93E0A2"
+            android:pathData="M54,23 C57,27 63,30 63,35 C63,40 58,41 54,41 C50,41 45,40 45,35 C45,30 51,27 54,23 Z" />
+        <path
+            android:fillColor="#F59E0B"
+            android:pathData="M54,25 C55.5,28 58,29.5 58,32 C58,34.5 56,35 54,35 C52,35 50,34.5 50,32 C50,29.5 52.5,28 54,25 Z" />
+
+        <!-- Bold Stylized "A" (Botanical Heritage Serif/Sans) -->
+        <!-- Left Stem of A -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M38,76 L44,76 L52,47 L47,47 Z" />
+        <!-- Right Stem of A -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M50,47 L55,47 L63,76 L57,76 L54.5,67 L46.5,67 L48.5,61 L53,61 Z" />
+        <!-- Crossbar of A -->
+        <path
+            android:fillColor="#FE932C"
+            android:pathData="M46.5,63 L53.5,63 L53,60 L47.5,60 Z" />
+
+        <!-- Bold Stylized "F" -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M65,47 L79,47 L79,53 L71,53 L71,59 L78,59 L78,65 L71,65 L71,76 L65,76 Z" />
+        <!-- Saffron accent on F's top bar -->
+        <path
+            android:fillColor="#FE932C"
+            android:pathData="M73,47 L79,47 L79,50 L73,50 Z" />
+
+        <!-- Baseline Organic Grain Dots -->
+        <path
+            android:fillColor="#FE932C"
+            android:pathData="M42,82 A2,2 0 1,1 41.9,82 Z" />
+        <path
+            android:fillColor="#93E0A2"
+            android:pathData="M54,82 A2,2 0 1,1 53.9,82 Z" />
+        <path
+            android:fillColor="#FE932C"
+            android:pathData="M66,82 A2,2 0 1,1 65.9,82 Z" />
+    </group>
+</vector>

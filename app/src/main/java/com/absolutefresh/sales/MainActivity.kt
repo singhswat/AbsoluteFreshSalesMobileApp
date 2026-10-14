@@ -35,6 +35,8 @@ import com.absolutefresh.sales.data.repository.FakeDeliveryRepository
 import com.absolutefresh.sales.ui.driver.DeliveriesScreen
 import com.absolutefresh.sales.ui.driver.DeliveriesViewModel
 import com.absolutefresh.sales.ui.driver.DoneTodayScreen
+import com.absolutefresh.sales.ui.orders.NewOrderScreen
+import com.absolutefresh.sales.ui.orders.NewOrderViewModel
 import com.absolutefresh.sales.ui.orders.OrdersScreen
 import com.absolutefresh.sales.ui.orders.OrdersViewModel
 import com.absolutefresh.sales.ui.outlets.OutletsScreen
@@ -71,6 +73,9 @@ fun MainAppScaffold() {
     val deliveryRepo    = androidx.compose.runtime.remember { FakeDeliveryRepository() }
     val driverViewModel = viewModel { DeliveriesViewModel(deliveryRepo) }
 
+    val outletRepo = androidx.compose.runtime.remember { FakeOutletRepository() }
+    val orderRepo  = androidx.compose.runtime.remember { FakeOrderRepository() }
+
     val userRole = (authState as? SignInScreenState.Authenticated)?.role ?: UserRole.REP
 
     // Bottom bar visible only on top-level tab destinations.
@@ -86,10 +91,11 @@ fun MainAppScaffold() {
                     currentRoute = currentRoute,
                     userRole     = userRole,
                     onNavigateTo = { route ->
+                        val homeRoute = if (userRole == UserRole.DRIVER) Screen.Deliveries.route else Screen.Beat.route
                         navController.navigate(route) {
+                            popUpTo(homeRoute) { saveState = true }
                             launchSingleTop = true
                             restoreState    = true
-                            popUpTo(navController.graph.startDestinationId) { saveState = true }
                         }
                     }
                 )
@@ -151,21 +157,21 @@ fun MainAppScaffold() {
             }
 
             composable(Screen.Orders.route) {
-                val ordersViewModel = viewModel { OrdersViewModel(FakeOrderRepository()) }
+                val ordersViewModel = viewModel { OrdersViewModel(orderRepo) }
                 OrdersScreen(
                     viewModel = ordersViewModel,
                     onNavigateToNewOrder = {
-                        // TODO: Navigate to new order
+                        navController.navigate("new_order/o1")
                     }
                 )
             }
 
             composable(Screen.Outlets.route) {
-                val outletsViewModel = viewModel { OutletsViewModel(FakeOutletRepository()) }
+                val outletsViewModel = viewModel { OutletsViewModel(outletRepo) }
                 OutletsScreen(
                     viewModel = outletsViewModel,
                     onNavigateToNewOrder = { outletId ->
-                        // navigate to new order
+                        navController.navigate("new_order/$outletId")
                     }
                 )
             }
@@ -192,13 +198,29 @@ fun MainAppScaffold() {
             composable("todays_visit/{outletId}") { backStackEntry ->
                 val outletId = backStackEntry.arguments?.getString("outletId") ?: ""
                 val visitViewModel = viewModel(key = outletId) {
-                    TodaysVisitViewModel(outletId, FakeOutletRepository())
+                    TodaysVisitViewModel(outletId, outletRepo)
                 }
                 TodaysVisitScreen(
                     viewModel = visitViewModel,
                     onNavigateBack = { navController.popBackStack() },
                     onNavigateToNewOrder = { id ->
-                        // TODO: Navigate to new order
+                        navController.navigate("new_order/$id")
+                    }
+                )
+            }
+
+            composable("new_order/{outletId}") { backStackEntry ->
+                val outletId = backStackEntry.arguments?.getString("outletId") ?: "o1"
+                val newOrderViewModel = viewModel(key = "new_order_$outletId") {
+                    NewOrderViewModel(outletId, outletRepo, orderRepo)
+                }
+                NewOrderScreen(
+                    viewModel = newOrderViewModel,
+                    onNavigateBack = { navController.popBackStack() },
+                    onOrderPlaced = {
+                        navController.navigate(Screen.Orders.route) {
+                            popUpTo(Screen.Beat.route)
+                        }
                     }
                 )
             }

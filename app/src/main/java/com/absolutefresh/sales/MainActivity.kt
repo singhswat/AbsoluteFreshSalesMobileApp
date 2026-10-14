@@ -54,6 +54,8 @@ import com.absolutefresh.sales.ui.orders.OrdersScreen
 import com.absolutefresh.sales.ui.orders.OrdersViewModel
 import com.absolutefresh.sales.ui.outlets.OutletsScreen
 import com.absolutefresh.sales.ui.outlets.OutletsViewModel
+import com.absolutefresh.sales.ui.outlets.add.AddOutletScreen
+import com.absolutefresh.sales.ui.outlets.add.AddOutletViewModel
 import com.absolutefresh.sales.ui.splash.SplashScreen
 import com.absolutefresh.sales.ui.stock.StockScreen
 import com.absolutefresh.sales.ui.stock.StockViewModel
@@ -194,6 +196,9 @@ fun MainAppScaffold() {
                     viewModel = outletsViewModel,
                     onNavigateToNewOrder = { outletId ->
                         navController.navigate("new_order/$outletId")
+                    },
+                    onNavigateToAddOutlet = {
+                        navController.navigate(Screen.AddOutlet.route)
                     }
                 )
             }
@@ -223,6 +228,17 @@ fun MainAppScaffold() {
             }
 
             // ── Rep sub-screens (no bottom bar) ───────────────────────────────
+            composable(Screen.AddOutlet.route) {
+                val addOutletViewModel = viewModel {
+                    AddOutletViewModel(outletRepo)
+                }
+                AddOutletScreen(
+                    viewModel = addOutletViewModel,
+                    onNavigateBack = { navController.popBackStack() },
+                    onOutletSaved = { navController.popBackStack() }
+                )
+            }
+
             composable(Screen.Holidays.route) {
                 val holidayViewModel = viewModel {
                     HolidayViewModel(holidayRepo)

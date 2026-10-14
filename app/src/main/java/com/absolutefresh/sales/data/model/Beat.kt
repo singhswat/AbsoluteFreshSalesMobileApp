@@ -34,6 +34,9 @@ data class Outlet(
     val outstandingBalance: Double = 0.0,
     val creditLimit: Double = 10000.0,
     val paymentTermsDays: Int = 15,
+    val avgKgPerDay: Double = 10.0,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
     val syncStatus: SyncStatus = SyncStatus.SYNCED
 )
 

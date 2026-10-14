@@ -89,7 +89,8 @@ import com.absolutefresh.sales.ui.theme.SurfaceCard
 fun OutletsScreen(
     viewModel: OutletsViewModel,
     modifier: Modifier = Modifier,
-    onNavigateToNewOrder: (outletId: String) -> Unit = {}
+    onNavigateToNewOrder: (outletId: String) -> Unit = {},
+    onNavigateToAddOutlet: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var isSearchExpanded by remember { mutableStateOf(false) }
@@ -106,7 +107,9 @@ fun OutletsScreen(
             pendingSyncCount = (uiState as? OutletsUiState.Populated)?.pendingSyncCount ?: 0,
             onToggleSearch = { isSearchExpanded = !isSearchExpanded },
             onSearchChange = { viewModel.setSearchQuery(it) },
-            onAddOutletClick = { viewModel.openAddOutlet() }
+            onAddOutletClick = {
+                onNavigateToAddOutlet()
+            }
         )
 
         // Area Filter Chips Bar
@@ -128,7 +131,7 @@ fun OutletsScreen(
             }
 
             is OutletsUiState.Empty -> {
-                OutletsEmptyState(onAddOutlet = { viewModel.openAddOutlet() })
+                OutletsEmptyState(onAddOutlet = { onNavigateToAddOutlet() })
             }
 
             is OutletsUiState.Error -> {

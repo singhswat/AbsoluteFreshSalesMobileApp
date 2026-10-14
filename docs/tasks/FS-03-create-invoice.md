@@ -28,11 +28,13 @@ Implement the native Android Jetpack Compose Invoice screen (`create_invoice/{or
 - [x] AC6: Share button triggers Android Intent (WhatsApp/Share Sheet) with formatted bill receipt text.
 - [x] AC7: Full unit test coverage for `InvoiceViewModel`.
 - [x] AC8: Verified live on Android emulator (`Pixel_10_Pro_XL`).
+- [x] AC9: On-device PDF generation via `android.graphics.pdf.PdfDocument` with export to local storage (`Documents`/`Downloads`).
+- [x] AC10: Direct 1-tap WhatsApp sharing with PDF file attachment via `FileProvider` and formatted message text.
 
 ## Verification Evidence
-- Unit Tests: 55/55 passed across 10 test suites (`InvoiceViewModelTest`: 4/4 passed).
-- Emulator Live Run: Verified on `Pixel_10_Pro_XL` (Provisional invoice banner, official invoice banner, GST 5% breakdown card, and Android OS Share Sheet sheet invoked).
-- Artifacts: `emulator_screen_invoice.png`, `emulator_screen_gupta_invoice.png`, `emulator_screen_share_dialog.png`.
+- Unit Tests: All test suites passed (`InvoiceViewModelTest`, `SignInViewModelTest`, `BeatViewModelTest`, etc.).
+- Build Verification: `BUILD SUCCESSFUL` across all compilation tasks with `FileProvider` in `AndroidManifest.xml`.
+- Features Added: [InvoicePdfGenerator.kt](file:///c:/Workspace/Absolute%20Fresh/Mobile%20App/app/src/main/java/com/absolutefresh/sales/ui/invoice/InvoicePdfGenerator.kt) and updated [InvoiceScreen.kt](file:///c:/Workspace/Absolute%20Fresh/Mobile%20App/app/src/main/java/com/absolutefresh/sales/ui/invoice/InvoiceScreen.kt).
 
 ## Status
 - **Status:** Complete (Ready for merge to main)

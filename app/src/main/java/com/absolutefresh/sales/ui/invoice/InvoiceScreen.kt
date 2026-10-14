@@ -1,11 +1,16 @@
 package com.absolutefresh.sales.ui.invoice
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,7 +26,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.HourglassTop
+import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material.icons.filled.Receipt
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
@@ -99,6 +107,18 @@ fun InvoiceScreen(
                         )
                     }
                 },
+                actions = {
+                    if (uiState is InvoiceUiState.Success) {
+                        val success = uiState as InvoiceUiState.Success
+                        IconButton(onClick = { InvoicePdfGenerator.openPdfViewer(context, success) }) {
+                            Icon(
+                                imageVector = Icons.Default.Download,
+                                contentDescription = "Export PDF",
+                                tint = Color.White
+                            )
+                        }
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = GreenPrimary
                 )
@@ -115,42 +135,46 @@ fun InvoiceScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 12.dp),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
                         OutlinedButton(
-                            onClick = onNavigateBack,
+                            onClick = {
+                                InvoicePdfGenerator.openPdfViewer(context, success)
+                            },
                             modifier = Modifier
                                 .weight(1f)
                                 .height(50.dp),
                             shape = RoundedCornerShape(10.dp)
                         ) {
-                            Text(text = "Close", fontWeight = FontWeight.SemiBold)
+                            Icon(
+                                imageVector = Icons.Default.PictureAsPdf,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(text = "Export PDF", fontWeight = FontWeight.SemiBold)
                         }
 
                         Button(
                             onClick = {
-                                val sendIntent = Intent().apply {
-                                    action = Intent.ACTION_SEND
-                                    putExtra(Intent.EXTRA_TEXT, success.shareText)
-                                    type = "text/plain"
-                                }
-                                val shareIntent = Intent.createChooser(sendIntent, "Share Invoice Receipt")
-                                context.startActivity(shareIntent)
+                                InvoicePdfGenerator.shareViaWhatsApp(context, success)
                             },
                             modifier = Modifier
-                                .weight(1.5f)
+                                .weight(1.3f)
                                 .height(50.dp),
                             shape = RoundedCornerShape(10.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = GreenPrimary)
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF25D366))
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Share,
                                 contentDescription = null,
+                                tint = Color.White,
                                 modifier = Modifier.size(18.dp)
                             )
-                            Spacer(modifier = Modifier.width(8.dp))
+                            Spacer(modifier = Modifier.width(6.dp))
                             Text(
-                                text = "Share Receipt",
+                                text = "WhatsApp Bill",
+                                color = Color.White,
                                 fontWeight = FontWeight.Bold
                             )
                         }
@@ -202,6 +226,8 @@ fun InvoiceScreen(
 
 @Composable
 private fun InvoiceSuccessContent(state: InvoiceUiState.Success) {
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -633,6 +659,81 @@ private fun InvoiceSuccessContent(state: InvoiceUiState.Success) {
                             fontWeight = FontWeight.Bold,
                             color = if (state.paymentMode == PaymentMode.CREDIT_15D) AgingText else GreenPrimary
                         )
+                    }
+
+                    Spacer(modifier = Modifier.height(14.dp))
+
+                    // Direct Action Buttons for Sales Rep / Vendor Communication
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Button(
+                            onClick = {
+                                InvoicePdfGenerator.shareViaWhatsApp(context, state)
+                            },
+                            modifier = Modifier
+                                .weight(1.2f)
+                                .height(44.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFF25D366)
+                            ),
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Share,
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = "WhatsApp PDF",
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 12.sp
+                            )
+                        }
+
+                        OutlinedButton(
+                            onClick = {
+                                InvoicePdfGenerator.openPdfViewer(context, state)
+                            },
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(44.dp),
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.PictureAsPdf,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = "View PDF",
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 12.sp
+                            )
+                        }
+
+                        OutlinedButton(
+                            onClick = {
+                                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                                val clip = ClipData.newPlainText("Invoice Receipt", state.shareText)
+                                clipboard.setPrimaryClip(clip)
+                                Toast.makeText(context, "Receipt text copied", Toast.LENGTH_SHORT).show()
+                            },
+                            modifier = Modifier.size(44.dp),
+                            contentPadding = PaddingValues(0.dp),
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ContentCopy,
+                                contentDescription = "Copy text",
+                                modifier = Modifier.size(16.dp)
+                            )
+                        }
                     }
                 }
 

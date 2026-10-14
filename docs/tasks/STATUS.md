@@ -32,18 +32,11 @@
 | **Today's Visit Execution** | `todays_visit/{outletId}` | FS-02 | [`TodaysVisitScreen.kt`](file:///c:/Workspace/Absolute%20Fresh/Mobile%20App/app/src/main/java/com/absolutefresh/sales/ui/visit/TodaysVisitScreen.kt) · [`TodaysVisitViewModel.kt`](file:///c:/Workspace/Absolute%20Fresh/Mobile%20App/app/src/main/java/com/absolutefresh/sales/ui/visit/TodaysVisitViewModel.kt) | ✅ 4/4 unit tests pass |
 | **Driver Deliveries & Done Today** | `deliveries`, `done_today` | FS-06 | [`DeliveriesScreen.kt`](file:///c:/Workspace/Absolute%20Fresh/Mobile%20App/app/src/main/java/com/absolutefresh/sales/ui/driver/DeliveriesScreen.kt) · [`DoneTodayScreen.kt`](file:///c:/Workspace/Absolute%20Fresh/Mobile%20App/app/src/main/java/com/absolutefresh/sales/ui/driver/DoneTodayScreen.kt) · [`DeliveriesViewModel.kt`](file:///c:/Workspace/Absolute%20Fresh/Mobile%20App/app/src/main/java/com/absolutefresh/sales/ui/driver/DeliveriesViewModel.kt) · [`DeliveryRepository.kt`](file:///c:/Workspace/Absolute%20Fresh/Mobile%20App/app/src/main/java/com/absolutefresh/sales/data/repository/DeliveryRepository.kt) | ✅ 4/4 unit tests pass |
 | **Confirm Delivery & POD** | `confirm_delivery/{deliveryId}` | FS-06 | [`ConfirmDeliveryScreen.kt`](file:///c:/Workspace/Absolute%20Fresh/Mobile%20App/app/src/main/java/com/absolutefresh/sales/ui/driver/confirm/ConfirmDeliveryScreen.kt) · [`ConfirmDeliveryViewModel.kt`](file:///c:/Workspace/Absolute%20Fresh/Mobile%20App/app/src/main/java/com/absolutefresh/sales/ui/driver/confirm/ConfirmDeliveryViewModel.kt) | ✅ 7/7 unit tests pass |
+| **Room Database & Offline DAOs** | Local DB | Persistence | [`AppDatabase.kt`](file:///c:/Workspace/Absolute%20Fresh/Mobile%20App/app/src/main/java/com/absolutefresh/sales/data/local/AppDatabase.kt) · [`OutletDao.kt`](file:///c:/Workspace/Absolute%20Fresh/Mobile%20App/app/src/main/java/com/absolutefresh/sales/data/local/dao/OutletDao.kt) · [`OrderDao.kt`](file:///c:/Workspace/Absolute%20Fresh/Mobile%20App/app/src/main/java/com/absolutefresh/sales/data/local/dao/OrderDao.kt) · [`BeatDao.kt`](file:///c:/Workspace/Absolute%20Fresh/Mobile%20App/app/src/main/java/com/absolutefresh/sales/data/local/dao/BeatDao.kt) · [`OutboxDao.kt`](file:///c:/Workspace/Absolute%20Fresh/Mobile%20App/app/src/main/java/com/absolutefresh/sales/data/local/dao/OutboxDao.kt) · [`VanStockDao.kt`](file:///c:/Workspace/Absolute%20Fresh/Mobile%20App/app/src/main/java/com/absolutefresh/sales/data/local/dao/VanStockDao.kt) | ✅ 3/3 RoomRepository tests pass |
+| **WorkManager Sync Worker** | Outbox Replay | Background Sync | [`OutboxSyncWorker.kt`](file:///c:/Workspace/Absolute%20Fresh/Mobile%20App/app/src/main/java/com/absolutefresh/sales/data/sync/OutboxSyncWorker.kt) | ✅ Build verified with network constraints |
+| **Supabase Kotlin SDK & Sync Engine** | Supabase Sync | Postgrest / Auth / Ktor | [`SupabaseNetworkDataSource.kt`](file:///c:/Workspace/Absolute%20Fresh/Mobile%20App/app/src/main/java/com/absolutefresh/sales/data/network/SupabaseNetworkDataSource.kt) · [`SyncRepository.kt`](file:///c:/Workspace/Absolute%20Fresh/Mobile%20App/app/src/main/java/com/absolutefresh/sales/data/sync/SyncRepository.kt) · [`NetworkDtos.kt`](file:///c:/Workspace/Absolute%20Fresh/Mobile%20App/app/src/main/java/com/absolutefresh/sales/data/network/dto/NetworkDtos.kt) | ✅ 7/7 tests pass (`SupabaseDtoTest` + `SyncRepositoryTest`) |
 
-**Unit Test Suite: 91 / 91 unit tests pass across 15 suites (BUILD SUCCESSFUL, 0 failures, 0 errors).**
-
----
-
-## 🟡 IN PROGRESS / NEXT UP
-
-| Screen / Flow | Route | Feature Ref | Design Spec | Priority |
-|---|---|---|---|---|
-| **New Order Booking Flow** | `new_order/{outletId}` | FS-03 | screen-map §2.6 · Stitch `rep_new_order_booking` | High |
-| **Room Database & Offline DAOs** | Local DB | Persistence | ADR-001/002 | High |
-| **WorkManager Sync Worker** | Outbox Replay | Background Sync | ADR-001 | High |
+**Unit Test Suite: 101 / 101 unit tests pass across 18 suites (BUILD SUCCESSFUL, 0 failures, 0 errors).**
 
 ---
 

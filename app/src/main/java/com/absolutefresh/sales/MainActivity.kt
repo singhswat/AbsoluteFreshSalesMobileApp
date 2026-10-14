@@ -20,9 +20,13 @@ import com.absolutefresh.sales.data.model.UserRole
 import com.absolutefresh.sales.data.repository.FakeAuthRepository
 import com.absolutefresh.sales.data.repository.FakeBeatRepository
 import com.absolutefresh.sales.data.repository.FakeBeatChangeRepository
+import com.absolutefresh.sales.data.repository.FakeDeliveryRepository
+import com.absolutefresh.sales.data.repository.FakeHolidayRepository
 import com.absolutefresh.sales.data.repository.FakeOrderHistoryRepository
 import com.absolutefresh.sales.data.repository.FakeOrderRepository
 import com.absolutefresh.sales.data.repository.FakeOutletRepository
+import com.absolutefresh.sales.ui.holidays.HolidayCalendarScreen
+import com.absolutefresh.sales.ui.holidays.HolidayViewModel
 import com.absolutefresh.sales.ui.orderhistory.OrderHistoryScreen
 import com.absolutefresh.sales.ui.orderhistory.OrderHistoryViewModel
 import com.absolutefresh.sales.ui.auth.SignInScreen
@@ -39,7 +43,6 @@ import com.absolutefresh.sales.ui.navigation.Screen
 import com.absolutefresh.sales.ui.navigation.repTabs
 import com.absolutefresh.sales.ui.more.MoreScreen
 import com.absolutefresh.sales.ui.more.MoreViewModel
-import com.absolutefresh.sales.data.repository.FakeDeliveryRepository
 import com.absolutefresh.sales.ui.driver.DeliveriesScreen
 import com.absolutefresh.sales.ui.driver.DeliveriesViewModel
 import com.absolutefresh.sales.ui.driver.DoneTodayScreen
@@ -85,6 +88,7 @@ fun MainAppScaffold() {
     val orderRepo  = androidx.compose.runtime.remember { FakeOrderRepository() }
     val beatChangeRepo = androidx.compose.runtime.remember { FakeBeatChangeRepository() }
     val orderHistoryRepo = androidx.compose.runtime.remember { FakeOrderHistoryRepository() }
+    val holidayRepo = androidx.compose.runtime.remember { FakeHolidayRepository() }
 
     val userRole = (authState as? SignInScreenState.Authenticated)?.role ?: UserRole.REP
 
@@ -209,11 +213,24 @@ fun MainAppScaffold() {
                     },
                     onNavigateToBeatChange = {
                         navController.navigate(Screen.BeatChange.route)
+                    },
+                    onNavigateToHolidays = {
+                        navController.navigate(Screen.Holidays.route)
                     }
                 )
             }
 
             // ── Rep sub-screens (no bottom bar) ───────────────────────────────
+            composable(Screen.Holidays.route) {
+                val holidayViewModel = viewModel {
+                    HolidayViewModel(holidayRepo)
+                }
+                HolidayCalendarScreen(
+                    viewModel = holidayViewModel,
+                    onNavigateBack = { navController.popBackStack() }
+                )
+            }
+
             composable("todays_visit/{outletId}") { backStackEntry ->
                 val outletId = backStackEntry.arguments?.getString("outletId") ?: ""
                 val visitViewModel = viewModel(key = outletId) {

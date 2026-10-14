@@ -89,7 +89,8 @@ fun MoreScreen(
     viewModel: MoreViewModel,
     modifier: Modifier = Modifier,
     onSignOut: () -> Unit = {},
-    onNavigateToBeatChange: () -> Unit = {}
+    onNavigateToBeatChange: () -> Unit = {},
+    onNavigateToHolidays: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val scrollState = rememberScrollState()
@@ -127,7 +128,7 @@ fun MoreScreen(
 
         // Operations & Shortcuts Card
         OperationsCard(
-            onOpenHolidays = { viewModel.openHolidays() },
+            onOpenHolidays = onNavigateToHolidays,
             onOpenBeatChange = onNavigateToBeatChange
         )
 

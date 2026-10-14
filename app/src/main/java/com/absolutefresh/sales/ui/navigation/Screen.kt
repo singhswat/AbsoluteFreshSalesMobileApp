@@ -35,6 +35,7 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector?
     object OrderHistory  : Screen("order_history/{orderId}", "Order History") {
         fun createRoute(orderId: String) = "order_history/$orderId"
     }
+    object Holidays      : Screen("holidays",                "Holiday Calendar")
 
     // ── Driver Navigation Tabs (2 tabs) ───────────────────────────────────────
     object Deliveries   : Screen("deliveries", "Deliveries", Icons.Default.LocalShipping)

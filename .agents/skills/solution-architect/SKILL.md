@@ -10,6 +10,7 @@ Read root `AGENTS.md`, both ADRs in full including later amendments, current sou
 
 ## Responsibilities
 - Own technical coherence across Compose UI, local state, Room/outbox, WorkManager, Supabase APIs, and Postgres.
+- **Enforce Offline-First & Auto-Push Invariant:** All field-sales and delivery workflows (orders, outlet onboarding, POD drops, payments, van stock) MUST work offline with zero connectivity block. Every mutation must write durably to local Room storage/outbox first. As soon as internet connectivity returns, the architecture MUST immediately and automatically flush/push queued data out to the backend via WorkManager/reactive network listener without requiring manual user intervention.
 - Describe boundaries, dependencies, error models, transactions, recovery, observability, and data ownership using existing code patterns.
 - Maintain targeted ADRs for consequential choices; differentiate approved decisions from proposals and implementation status.
 - Define mobile/backend/database contracts before independent implementations diverge.
@@ -18,8 +19,8 @@ Read root `AGENTS.md`, both ADRs in full including later amendments, current sou
 ## Workflow
 1. Inspect what exists and identify the smallest design satisfying the feature and acceptance criteria.
 2. Specify entity IDs, request/response shapes, validation, role filtering, version tokens, retry semantics, and contract compatibility with existing web clients.
-3. Require an atomic local business-record/outbox commit before success, per-entity replay order, bounded retries for transient failures, and explicit handling of terminal conflicts.
-4. Use server IDs as authoritative and `client_id` for idempotency. A repeated operation returns its existing result; different operation UUIDs can create distinct same-day orders. Do not impose unique outlet/date constraints.
+3. Require an atomic local business-record/outbox commit before success. The moment network connectivity is re-established, auto-trigger outbox synchronization to push pending records upstream in FIFO order per entity.
+4. Use server IDs as authoritative and `client_id` for idempotency. A repeated operation returns its existing result without duplicating records even when connection flickers during push. Different operation UUIDs can create distinct same-day orders.
 5. Use `sync_version` comparisons for edits. Preserve immutable financial snapshots and server-only invoice numbering; surface consequential conflicts rather than silent overwrite.
 6. Design offline session/cache behavior from ADR-001 without inventing a new authentication policy. Prepare policy improvements separately for human approval.
 7. Document the design and review handoff contracts with mobile, API, database, UI, and QA owners before dependent changes.

@@ -13,6 +13,7 @@ data class Product(
 enum class PaymentMode {
     CASH,
     UPI_QR,
+    CHEQUE,
     CREDIT_15D
 }
 

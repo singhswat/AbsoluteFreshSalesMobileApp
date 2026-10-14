@@ -42,7 +42,9 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector?
     object DoneToday    : Screen("done_today", "Done Today", Icons.Default.CheckCircle)
 
     // ── Driver Sub-screens ────────────────────────────────────────────────────
-    object ConfirmDelivery : Screen("confirm_delivery/{deliveryId}", "Confirm Delivery")
+    object ConfirmDelivery : Screen("confirm_delivery/{deliveryId}", "Confirm Delivery") {
+        fun createRoute(deliveryId: String) = "confirm_delivery/$deliveryId"
+    }
 }
 
 /** Bottom-nav tab sets for each role. */

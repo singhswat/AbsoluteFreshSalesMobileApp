@@ -85,7 +85,8 @@ import com.absolutefresh.sales.ui.theme.SurfaceCard
 @Composable
 fun DeliveriesScreen(
     viewModel: DeliveriesViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigateToConfirm: (String) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
@@ -133,7 +134,7 @@ fun DeliveriesScreen(
                         items(state.pendingDeliveries, key = { it.id }) { delivery ->
                             PendingDeliveryCard(
                                 delivery = delivery,
-                                onConfirmClick = { viewModel.openConfirmDelivery(delivery) },
+                                onConfirmClick = { onNavigateToConfirm(delivery.id) },
                                 onCallClick = {
                                     val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${delivery.outletPhone}"))
                                     context.startActivity(intent)

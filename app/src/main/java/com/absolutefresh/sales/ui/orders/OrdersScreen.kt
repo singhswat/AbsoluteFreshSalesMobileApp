@@ -479,6 +479,7 @@ private fun PaymentModeTag(mode: PaymentMode) {
     val text = when (mode) {
         PaymentMode.CASH -> "Cash"
         PaymentMode.UPI_QR -> "UPI QR"
+        PaymentMode.CHEQUE -> "Cheque"
         PaymentMode.CREDIT_15D -> "Credit 15D"
     }
     Text(

@@ -119,6 +119,7 @@ class DeliveriesViewModelTest {
 
         override fun observeDeliveries(): Flow<List<DeliveryItem>> = flow.asStateFlow()
         override suspend fun getDeliveries(): List<DeliveryItem> = flow.value
+        override suspend fun getDeliveryById(deliveryId: String): DeliveryItem? = flow.value.find { it.id == deliveryId }
 
         override suspend fun confirmDelivery(
             deliveryId: String,

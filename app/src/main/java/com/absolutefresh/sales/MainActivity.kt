@@ -46,6 +46,8 @@ import com.absolutefresh.sales.ui.more.MoreViewModel
 import com.absolutefresh.sales.ui.driver.DeliveriesScreen
 import com.absolutefresh.sales.ui.driver.DeliveriesViewModel
 import com.absolutefresh.sales.ui.driver.DoneTodayScreen
+import com.absolutefresh.sales.ui.driver.confirm.ConfirmDeliveryScreen
+import com.absolutefresh.sales.ui.driver.confirm.ConfirmDeliveryViewModel
 import com.absolutefresh.sales.ui.orders.NewOrderScreen
 import com.absolutefresh.sales.ui.orders.NewOrderViewModel
 import com.absolutefresh.sales.ui.orders.OrdersScreen
@@ -295,7 +297,28 @@ fun MainAppScaffold() {
 
             // ── Driver top-level tabs ─────────────────────────────────────────
             composable(Screen.Deliveries.route) {
-                DeliveriesScreen(viewModel = driverViewModel)
+                DeliveriesScreen(
+                    viewModel = driverViewModel,
+                    onNavigateToConfirm = { deliveryId ->
+                        navController.navigate(Screen.ConfirmDelivery.createRoute(deliveryId))
+                    }
+                )
+            }
+
+            composable(Screen.ConfirmDelivery.route) { backStackEntry ->
+                val deliveryId = backStackEntry.arguments?.getString("deliveryId") ?: ""
+                val confirmViewModel = viewModel(key = "confirm_$deliveryId") {
+                    ConfirmDeliveryViewModel(deliveryId, deliveryRepo)
+                }
+                ConfirmDeliveryScreen(
+                    viewModel = confirmViewModel,
+                    onNavigateBack = { navController.popBackStack() },
+                    onDeliveryConfirmed = {
+                        navController.navigate(Screen.DoneToday.route) {
+                            popUpTo(Screen.Deliveries.route)
+                        }
+                    }
+                )
             }
 
             composable(Screen.DoneToday.route) {

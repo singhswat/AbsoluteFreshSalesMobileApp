@@ -31,6 +31,7 @@ data class DeliveryItem(
 interface DeliveryRepository {
     fun observeDeliveries(): Flow<List<DeliveryItem>>
     suspend fun getDeliveries(): List<DeliveryItem>
+    suspend fun getDeliveryById(deliveryId: String): DeliveryItem?
     suspend fun confirmDelivery(
         deliveryId: String,
         deliveredPackets: Int,
@@ -145,6 +146,8 @@ class FakeDeliveryRepository : DeliveryRepository {
     override fun observeDeliveries(): Flow<List<DeliveryItem>> = deliveriesFlow.asStateFlow()
 
     override suspend fun getDeliveries(): List<DeliveryItem> = deliveriesFlow.value
+    override suspend fun getDeliveryById(deliveryId: String): DeliveryItem? =
+        deliveriesFlow.value.find { it.id == deliveryId }
 
     override suspend fun confirmDelivery(
         deliveryId: String,

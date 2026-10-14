@@ -98,6 +98,7 @@ class InvoiceViewModel(
         val paymentStatusText = when (order.paymentMode) {
             PaymentMode.CASH -> "Collected via Cash (नकद)"
             PaymentMode.UPI_QR -> "Paid via UPI QR (यूपीआई)"
+            PaymentMode.CHEQUE -> "Paid via Cheque (चेक)"
             PaymentMode.CREDIT_15D -> "15-Day Credit Line (उधार)"
         }
 
@@ -176,6 +177,7 @@ class InvoiceViewModel(
         val modeLabel = when (paymentMode) {
             PaymentMode.CASH -> "Cash"
             PaymentMode.UPI_QR -> "UPI QR"
+            PaymentMode.CHEQUE -> "Cheque"
             PaymentMode.CREDIT_15D -> "15D Credit"
         }
 

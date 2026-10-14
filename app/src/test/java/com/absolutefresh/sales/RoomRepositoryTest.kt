@@ -214,12 +214,32 @@ class RoomRepositoryTest {
             }
         }
 
+        override suspend fun insertOrders(orders: List<FieldOrderEntity>) {
+            insertedOrders.addAll(orders)
+            flow.value = insertedOrders.map { order ->
+                FieldOrderWithItems(order, insertedItems.filter { it.orderId == order.id })
+            }
+        }
+
         override suspend fun insertOrderEntity(order: FieldOrderEntity) {
             insertedOrders.add(order)
+            flow.value = insertedOrders.map { o ->
+                FieldOrderWithItems(o, insertedItems.filter { it.orderId == o.id })
+            }
         }
 
         override suspend fun insertOrderItemEntities(items: List<OrderItemEntity>) {
             insertedItems.addAll(items)
+            flow.value = insertedOrders.map { o ->
+                FieldOrderWithItems(o, insertedItems.filter { it.orderId == o.id })
+            }
+        }
+
+        override suspend fun insertOrderItems(items: List<OrderItemEntity>) {
+            insertedItems.addAll(items)
+            flow.value = insertedOrders.map { o ->
+                FieldOrderWithItems(o, insertedItems.filter { it.orderId == o.id })
+            }
         }
 
         override suspend fun updateSyncStatus(

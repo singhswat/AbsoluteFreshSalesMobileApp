@@ -9,7 +9,9 @@ import com.absolutefresh.sales.data.model.FieldOrder
 import com.absolutefresh.sales.data.model.Product
 import com.absolutefresh.sales.data.model.SyncStatus
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import java.util.UUID
 
@@ -58,13 +60,11 @@ class RoomOrderRepository(
     )
 
     override fun observeOrders(): Flow<List<FieldOrder>> {
-        return orderDao.getAllOrders().map { list ->
-            if (list.isEmpty()) {
+        return flow {
+            if (orderDao.getOrderCount() == 0) {
                 seedInitialOrders()
-                orderDao.getAllOrders().first().map { it.toDomain() }
-            } else {
-                list.map { it.toDomain() }
             }
+            emitAll(orderDao.getAllOrders().map { list -> list.map { it.toDomain() } })
         }
     }
 

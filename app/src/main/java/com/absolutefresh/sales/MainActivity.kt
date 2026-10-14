@@ -41,6 +41,7 @@ import com.absolutefresh.sales.ui.invoice.InvoiceViewModel
 import com.absolutefresh.sales.ui.navigation.BottomNavBar
 import com.absolutefresh.sales.ui.navigation.Screen
 import com.absolutefresh.sales.ui.navigation.repTabs
+import com.absolutefresh.sales.ui.finance.FinanceScreen
 import com.absolutefresh.sales.ui.more.MoreScreen
 import com.absolutefresh.sales.ui.more.MoreViewModel
 import com.absolutefresh.sales.ui.driver.DeliveriesScreen
@@ -192,18 +193,16 @@ fun MainAppScaffold(container: com.absolutefresh.sales.data.di.AppContainer? = n
                 )
             }
 
-            composable(Screen.Orders.route) {
+            composable(Screen.Finance.route) {
                 val ordersViewModel = viewModel { OrdersViewModel(orderRepo) }
-                OrdersScreen(
+                FinanceScreen(
                     viewModel = ordersViewModel,
-                    onNavigateToNewOrder = {
-                        navController.navigate("new_order/o1")
+                    outletRepository = outletRepo,
+                    onNavigateToNewInvoice = { outletId ->
+                        navController.navigate("new_order/$outletId")
                     },
                     onNavigateToInvoice = { orderId ->
                         navController.navigate(Screen.CreateInvoice.createRoute(orderId))
-                    },
-                    onNavigateToHistory = { orderId ->
-                        navController.navigate(Screen.OrderHistory.createRoute(orderId))
                     }
                 )
             }
@@ -236,11 +235,31 @@ fun MainAppScaffold(container: com.absolutefresh.sales.data.di.AppContainer? = n
                             popUpTo(0) { inclusive = true }
                         }
                     },
+                    onNavigateToOrders = {
+                        navController.navigate(Screen.Orders.route)
+                    },
                     onNavigateToBeatChange = {
                         navController.navigate(Screen.BeatChange.route)
                     },
                     onNavigateToHolidays = {
                         navController.navigate(Screen.Holidays.route)
+                    }
+                )
+            }
+
+            // ── Rep sub-screens (no bottom bar) ───────────────────────────────
+            composable(Screen.Orders.route) {
+                val ordersViewModel = viewModel { OrdersViewModel(orderRepo) }
+                OrdersScreen(
+                    viewModel = ordersViewModel,
+                    onNavigateToNewOrder = {
+                        navController.navigate("new_order/o1")
+                    },
+                    onNavigateToInvoice = { orderId ->
+                        navController.navigate(Screen.CreateInvoice.createRoute(orderId))
+                    },
+                    onNavigateToHistory = { orderId ->
+                        navController.navigate(Screen.OrderHistory.createRoute(orderId))
                     }
                 )
             }

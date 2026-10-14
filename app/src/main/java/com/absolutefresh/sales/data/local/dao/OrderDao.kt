@@ -34,10 +34,16 @@ interface OrderDao {
     suspend fun getPendingSyncOrders(): List<FieldOrderWithItems>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrders(orders: List<FieldOrderEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrderEntity(order: FieldOrderEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrderItemEntities(items: List<OrderItemEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrderItems(items: List<OrderItemEntity>)
 
     @Transaction
     suspend fun insertOrderWithItems(order: FieldOrderEntity, items: List<OrderItemEntity>) {

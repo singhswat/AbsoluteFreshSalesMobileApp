@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Error
@@ -91,6 +92,7 @@ fun OrdersScreen(
     onNavigateToHistory: (String) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val searchQuery by viewModel.searchQuery.collectAsState()
     var isSearchExpanded by remember { mutableStateOf(false) }
 
     Column(
@@ -101,10 +103,11 @@ fun OrdersScreen(
         // Top Header
         OrdersHeader(
             isSearchExpanded = isSearchExpanded,
-            searchQuery = (uiState as? OrdersUiState.Populated)?.searchQuery ?: "",
+            searchQuery = searchQuery,
             pendingSyncCount = (uiState as? OrdersUiState.Populated)?.pendingSyncCount ?: 0,
             onToggleSearch = { isSearchExpanded = !isSearchExpanded },
-            onSearchChange = { viewModel.setSearchQuery(it) }
+            onSearchChange = { viewModel.setSearchQuery(it) },
+            onNewOrderClick = onNavigateToNewOrder
         )
 
         // Filter chips bar
@@ -201,7 +204,8 @@ private fun OrdersHeader(
     searchQuery: String,
     pendingSyncCount: Int,
     onToggleSearch: () -> Unit,
-    onSearchChange: (String) -> Unit
+    onSearchChange: (String) -> Unit,
+    onNewOrderClick: () -> Unit
 ) {
     Surface(
         color = SurfaceCard,
@@ -261,6 +265,19 @@ private fun OrdersHeader(
                             tint = GreenPrimary
                         )
                     }
+
+                    Spacer(modifier = Modifier.width(4.dp))
+
+                    Button(
+                        onClick = onNewOrderClick,
+                        colors = ButtonDefaults.buttonColors(containerColor = GreenPrimary),
+                        shape = RoundedCornerShape(8.dp),
+                        contentPadding = ButtonDefaults.ContentPadding
+                    ) {
+                        Icon(imageVector = Icons.Default.Add, contentDescription = null, modifier = Modifier.size(16.dp))
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text("New Order", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    }
                 }
             }
 
@@ -270,7 +287,17 @@ private fun OrdersHeader(
                     value = searchQuery,
                     onValueChange = onSearchChange,
                     modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text("Search by outlet or invoice...") },
+                    placeholder = { Text("Search by outlet or invoice (e.g. Sharma, AFF-2610)...") },
+                    leadingIcon = {
+                        Icon(imageVector = Icons.Default.Search, contentDescription = null, tint = GreenPrimary)
+                    },
+                    trailingIcon = {
+                        if (searchQuery.isNotEmpty()) {
+                            IconButton(onClick = { onSearchChange("") }) {
+                                Icon(imageVector = Icons.Default.Close, contentDescription = "Clear")
+                            }
+                        }
+                    },
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = GreenPrimary,

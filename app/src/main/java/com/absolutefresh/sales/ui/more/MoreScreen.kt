@@ -34,6 +34,7 @@ import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Payments
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Route
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -90,7 +91,8 @@ fun MoreScreen(
     modifier: Modifier = Modifier,
     onSignOut: () -> Unit = {},
     onNavigateToBeatChange: () -> Unit = {},
-    onNavigateToHolidays: () -> Unit = {}
+    onNavigateToHolidays: () -> Unit = {},
+    onNavigateToOrders: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val scrollState = rememberScrollState()
@@ -128,6 +130,7 @@ fun MoreScreen(
 
         // Operations & Shortcuts Card
         OperationsCard(
+            onOpenOrders = onNavigateToOrders,
             onOpenHolidays = onNavigateToHolidays,
             onOpenBeatChange = onNavigateToBeatChange
         )
@@ -395,6 +398,7 @@ private fun CashHeldCard(
 
 @Composable
 private fun OperationsCard(
+    onOpenOrders: () -> Unit,
     onOpenHolidays: () -> Unit,
     onOpenBeatChange: () -> Unit
 ) {
@@ -405,6 +409,13 @@ private fun OperationsCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+            OperationRow(
+                icon = Icons.Default.ShoppingCart,
+                title = "All Orders (सभी ऑर्डर्स)",
+                subtitle = "View field orders & dispatch status",
+                onClick = onOpenOrders
+            )
+            HorizontalDivider(color = BorderSubtle, thickness = 0.5.dp)
             OperationRow(
                 icon = Icons.Default.CalendarMonth,
                 title = "Holiday Calendar (अवकाश कैलेंडर)",

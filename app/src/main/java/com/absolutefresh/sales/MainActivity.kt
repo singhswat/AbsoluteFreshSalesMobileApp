@@ -19,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.absolutefresh.sales.data.model.UserRole
 import com.absolutefresh.sales.data.repository.FakeAuthRepository
 import com.absolutefresh.sales.data.repository.FakeBeatRepository
+import com.absolutefresh.sales.data.repository.FakeBeatChangeRepository
 import com.absolutefresh.sales.data.repository.FakeOrderRepository
 import com.absolutefresh.sales.data.repository.FakeOutletRepository
 import com.absolutefresh.sales.ui.auth.SignInScreen
@@ -26,6 +27,8 @@ import com.absolutefresh.sales.ui.auth.SignInScreenState
 import com.absolutefresh.sales.ui.auth.SignInViewModel
 import com.absolutefresh.sales.ui.beat.BeatScreen
 import com.absolutefresh.sales.ui.beat.BeatViewModel
+import com.absolutefresh.sales.ui.beatchange.BeatChangeScreen
+import com.absolutefresh.sales.ui.beatchange.BeatChangeViewModel
 import com.absolutefresh.sales.ui.invoice.InvoiceScreen
 import com.absolutefresh.sales.ui.invoice.InvoiceViewModel
 import com.absolutefresh.sales.ui.navigation.BottomNavBar
@@ -77,6 +80,7 @@ fun MainAppScaffold() {
 
     val outletRepo = androidx.compose.runtime.remember { FakeOutletRepository() }
     val orderRepo  = androidx.compose.runtime.remember { FakeOrderRepository() }
+    val beatChangeRepo = androidx.compose.runtime.remember { FakeBeatChangeRepository() }
 
     val userRole = (authState as? SignInScreenState.Authenticated)?.role ?: UserRole.REP
 
@@ -195,6 +199,9 @@ fun MainAppScaffold() {
                         navController.navigate(Screen.SignIn.route) {
                             popUpTo(0) { inclusive = true }
                         }
+                    },
+                    onNavigateToBeatChange = {
+                        navController.navigate(Screen.BeatChange.route)
                     }
                 )
             }
@@ -237,6 +244,16 @@ fun MainAppScaffold() {
                 }
                 InvoiceScreen(
                     viewModel = invoiceViewModel,
+                    onNavigateBack = { navController.popBackStack() }
+                )
+            }
+
+            composable(Screen.BeatChange.route) {
+                val beatChangeViewModel = viewModel {
+                    BeatChangeViewModel(outletRepo, beatChangeRepo)
+                }
+                BeatChangeScreen(
+                    viewModel = beatChangeViewModel,
                     onNavigateBack = { navController.popBackStack() }
                 )
             }

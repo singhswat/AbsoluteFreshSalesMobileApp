@@ -88,7 +88,8 @@ import java.time.format.DateTimeFormatter
 fun MoreScreen(
     viewModel: MoreViewModel,
     modifier: Modifier = Modifier,
-    onSignOut: () -> Unit = {}
+    onSignOut: () -> Unit = {},
+    onNavigateToBeatChange: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val scrollState = rememberScrollState()
@@ -127,7 +128,7 @@ fun MoreScreen(
         // Operations & Shortcuts Card
         OperationsCard(
             onOpenHolidays = { viewModel.openHolidays() },
-            onOpenBeatChange = { /* Suggest Beat Change stub */ }
+            onOpenBeatChange = onNavigateToBeatChange
         )
 
         // Sign Out Section

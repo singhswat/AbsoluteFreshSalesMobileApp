@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -5,6 +7,21 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.devtools.ksp")
 }
+
+val localProps = Properties().apply {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localPropertiesFile.inputStream().use { stream -> this.load(stream) }
+    }
+}
+
+val resolvedSupabaseUrl = (project.findProperty("SUPABASE_URL") as? String)
+    ?: localProps.getProperty("SUPABASE_URL")
+    ?: "https://fbfopgzblqmsflkfejwa.supabase.co"
+
+val resolvedSupabaseAnonKey = (project.findProperty("SUPABASE_ANON_KEY") as? String)
+    ?: localProps.getProperty("SUPABASE_ANON_KEY")
+    ?: ""
 
 android {
     namespace = "com.absolutefresh.sales"
@@ -22,8 +39,8 @@ android {
             useSupportLibrary = true
         }
 
-        buildConfigField("String", "SUPABASE_URL", "\"${project.findProperty("SUPABASE_URL") ?: "https://staging.absolutefreshfood.com"}\"")
-        buildConfigField("String", "SUPABASE_ANON_KEY", "\"${project.findProperty("SUPABASE_ANON_KEY") ?: "mock-staging-anon-key"}\"")
+        buildConfigField("String", "SUPABASE_URL", "\"$resolvedSupabaseUrl\"")
+        buildConfigField("String", "SUPABASE_ANON_KEY", "\"$resolvedSupabaseAnonKey\"")
     }
 
     buildTypes {

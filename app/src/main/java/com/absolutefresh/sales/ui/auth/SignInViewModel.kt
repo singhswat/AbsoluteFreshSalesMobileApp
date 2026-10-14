@@ -20,7 +20,7 @@ sealed class SignInScreenState {
         val inlineError: String? = null
     ) : SignInScreenState()
 
-    data class Authenticated(val role: UserRole, val userName: String) : SignInScreenState()
+    data class Authenticated(val role: UserRole, val userName: String, val userId: String = "") : SignInScreenState()
     data class AccountInactive(val message: String) : SignInScreenState()
     data class PendingApproval(val message: String) : SignInScreenState()
     data class OfflineDeadEnd(val message: String) : SignInScreenState()
@@ -43,7 +43,8 @@ class SignInViewModel(
             if (cachedUser != null) {
                 _uiState.value = SignInScreenState.Authenticated(
                     role = cachedUser.role,
-                    userName = cachedUser.name
+                    userName = cachedUser.name,
+                    userId = cachedUser.id
                 )
             } else {
                 _uiState.value = SignInScreenState.Form()
@@ -91,7 +92,8 @@ class SignInViewModel(
                     authRepository.saveCachedUser(result.user)
                     _uiState.value = SignInScreenState.Authenticated(
                         role = result.user.role,
-                        userName = result.user.name
+                        userName = result.user.name,
+                        userId = result.user.id
                     )
                 }
                 is AuthResult.InvalidCredentials -> {

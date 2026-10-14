@@ -22,21 +22,28 @@ Implement the real Supabase Kotlin SDK integration, network data models, and bac
 
 ## Acceptance Criteria
 - [x] AC1: Supabase Kotlin SDK 3.0.3 and Ktor 3.x integrated into `build.gradle.kts` and compilation succeeds cleanly.
-- [x] AC2: `SupabaseClientProvider` creates client from configurable URL and Anon key via `BuildConfig`.
+- [x] AC2: `SupabaseClientProvider` creates client from configurable URL and Anon key via `BuildConfig` (reading from `local.properties`).
 - [x] AC3: Network DTOs correctly serialize and deserialize PostgreSQL schemas (`OutletDto`, `BeatVisitDto`, `FieldOrderDto`, `FieldOrderItemDto`, `ProductDto`, `HolidayDto`).
-- [x] AC4: `SupabaseNetworkDataSource` supports fetching beats, outlets, products, and pushing orders/outlets with `client_id`.
+- [x] AC4: `SupabaseNetworkDataSource` supports fetching beats, outlets, products, and pushing orders/outlets with `client_id` and strict `isReadOnlyMode = true` safety lock.
 - [x] AC5: `OutboxSyncWorker` replays outbox mutations through network data source and updates local Room statuses upon sync.
 - [x] AC6: Repositories seamlessly provide offline reads and outbox-backed writes with automatic push on network return.
 - [x] AC7: Comprehensive unit tests pass across 18 test suites (101/101 tests pass, 0 failures, 0 errors).
+- [x] AC8: Application class `AbsoluteFreshApp` and `AppContainer` injected into `MainActivity`, driving ViewModels with Room repositories and auto-refresh on sign in.
+- [x] AC9: Debug APK assembled (`app-debug.apk`).
 
 ## Verification Evidence
-- **Build Status:** `BUILD SUCCESSFUL in 49s` via Gradle 9.6.0 with JDK 21.
+- **Build Status:** `BUILD SUCCESSFUL in 1m 23s` (unit tests) and `BUILD SUCCESSFUL in 2m 39s` (`assembleDebug`).
 - **Unit Test Results:**
   - `com.absolutefresh.sales.SupabaseDtoTest`: 5/5 tests passing (serialization, PostgreSQL column keys, JSON roundtrip).
   - `com.absolutefresh.sales.SyncRepositoryTest`: 2/2 tests passing (master data pull, Room upsert, local pending outlet retention).
   - `com.absolutefresh.sales.RoomRepositoryTest`: 3/3 tests passing.
-  - Existing suite: 91/91 tests passing.
+  - `com.absolutefresh.sales.SignInViewModelTest`: 10/10 tests passing.
   - Total: **101/101 unit tests passing across 18 test suites**.
+- **Live Supabase Environment Validation:**
+  - Endpoint `https://fbfopgzblqmsflkfejwa.supabase.co` validated.
+  - Tables `outlets`, `daily_beat_logs`, `products`, `orders`, `users` confirmed existing with Postgres RLS (`42501 permission denied` for unauthenticated requests, requiring Supabase Auth session).
+  - Supabase Auth endpoint verified active (`/auth/v1/token?grant_type=password`).
 
 ## Status
-- **Status:** Complete (Feature Branch Ready)
+- **Status:** Complete (Feature Branch Ready for Live Credential Testing)
+

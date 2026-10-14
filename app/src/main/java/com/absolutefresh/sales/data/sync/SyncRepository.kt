@@ -53,10 +53,20 @@ class SyncRepository(
      * Pulls latest master data from Supabase and synchronizes into local Room DB.
      * Preserves locally created PENDING entities to prevent data loss.
      */
-    suspend fun refreshMasterData(repId: String, beatDate: String): Result<Unit> = withContext(Dispatchers.IO) {
+    suspend fun refreshMasterData(repId: String = "", beatDate: String = ""): Result<Unit> = withContext(Dispatchers.IO) {
         runCatching {
-            // 1. Refresh Outlets
-            val outletsResult = networkDataSource.getOutlets(repId)
+            // 1. Refresh Outlets (fetch assigned outlets, or all outlets if rep has none or repId is blank)
+            val outletsResult = if (repId.isNotBlank()) {
+                val repOutlets = networkDataSource.getOutlets(repId)
+                if (repOutlets.isSuccess && repOutlets.getOrNull().isNullOrEmpty()) {
+                    networkDataSource.getOutlets(null)
+                } else {
+                    repOutlets
+                }
+            } else {
+                networkDataSource.getOutlets(null)
+            }
+
             if (outletsResult.isSuccess) {
                 val serverOutlets = outletsResult.getOrThrow()
                 val localEntities = serverOutlets.map { dto ->

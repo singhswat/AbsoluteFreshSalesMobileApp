@@ -76,25 +76,43 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainAppScaffold() {
+fun MainAppScaffold(container: com.absolutefresh.sales.data.di.AppContainer? = null) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val appContainer = container ?: androidx.compose.runtime.remember {
+        (context.applicationContext as? AbsoluteFreshApp)?.container
+            ?: com.absolutefresh.sales.data.di.AppContainer(context.applicationContext)
+    }
+
     val navController     = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute      = navBackStackEntry?.destination?.route ?: Screen.Splash.route
 
-    val fakeRepo      = FakeAuthRepository()
-    val authViewModel = viewModel { SignInViewModel(fakeRepo) }
+    val authViewModel = viewModel { SignInViewModel(appContainer.authRepository) }
     val authState     by authViewModel.uiState.collectAsState()
 
     val deliveryRepo    = androidx.compose.runtime.remember { FakeDeliveryRepository() }
     val driverViewModel = viewModel { DeliveriesViewModel(deliveryRepo) }
 
-    val outletRepo = androidx.compose.runtime.remember { FakeOutletRepository() }
-    val orderRepo  = androidx.compose.runtime.remember { FakeOrderRepository() }
+    val outletRepo = appContainer.outletRepository
+    val orderRepo  = appContainer.orderRepository
+    val beatRepo   = appContainer.beatRepository
     val beatChangeRepo = androidx.compose.runtime.remember { FakeBeatChangeRepository() }
     val orderHistoryRepo = androidx.compose.runtime.remember { FakeOrderHistoryRepository() }
     val holidayRepo = androidx.compose.runtime.remember { FakeHolidayRepository() }
 
-    val userRole = (authState as? SignInScreenState.Authenticated)?.role ?: UserRole.REP
+    val authenticatedState = authState as? SignInScreenState.Authenticated
+    val userRole = authenticatedState?.role ?: UserRole.REP
+
+    // Auto-pull live master data when authenticated
+    androidx.compose.runtime.LaunchedEffect(authenticatedState) {
+        if (authenticatedState != null) {
+            val today = java.time.LocalDate.now().toString()
+            appContainer.syncRepository.refreshMasterData(
+                repId = authenticatedState.userId,
+                beatDate = today
+            )
+        }
+    }
 
     // Bottom bar visible only on top-level tab destinations.
     val bottomBarRoutes = repTabs.map { it.route } +
@@ -165,7 +183,7 @@ fun MainAppScaffold() {
 
             // ── Rep top-level tabs ────────────────────────────────────────────
             composable(Screen.Beat.route) {
-                val beatViewModel = viewModel { BeatViewModel(FakeBeatRepository()) }
+                val beatViewModel = viewModel { BeatViewModel(beatRepo) }
                 BeatScreen(
                     beatViewModel = beatViewModel,
                     onOutletClick = { outletId ->

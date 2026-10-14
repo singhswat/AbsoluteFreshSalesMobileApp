@@ -31,6 +31,10 @@ class AppContainer(private val context: Context) {
         SyncRepository(database, networkDataSource)
     }
 
+    val authRepository: com.absolutefresh.sales.data.repository.AuthRepository by lazy {
+        com.absolutefresh.sales.data.repository.SupabaseAuthRepository()
+    }
+
     val outletRepository: OutletRepository by lazy {
         RoomOutletRepository(database.outletDao(), database.outboxDao())
     }

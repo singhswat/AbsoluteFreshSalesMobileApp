@@ -22,9 +22,11 @@ class OrdersViewModel(
     private val _uiState = MutableStateFlow<OrdersUiState>(OrdersUiState.Loading)
     val uiState: StateFlow<OrdersUiState> = _uiState.asStateFlow()
 
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+
     private var allOrders: List<FieldOrder> = emptyList()
     private var currentFilter: OrderFilter = OrderFilter.ALL
-    private var currentSearch: String = ""
     private var activeSelectedOrder: FieldOrder? = null
 
     init {
@@ -53,7 +55,7 @@ class OrdersViewModel(
     }
 
     fun setSearchQuery(query: String) {
-        currentSearch = query
+        _searchQuery.value = query
         applyFilterAndSearch()
     }
 
@@ -63,11 +65,7 @@ class OrdersViewModel(
     }
 
     private fun applyFilterAndSearch() {
-        if (allOrders.isEmpty()) {
-            _uiState.value = OrdersUiState.Empty
-            return
-        }
-
+        val query = _searchQuery.value.trim().lowercase()
         val today = LocalDate.now()
         val oneWeekAgo = System.currentTimeMillis() - (7 * 24 * 60 * 60 * 1000L)
 
@@ -85,13 +83,13 @@ class OrdersViewModel(
                 OrderFilter.DELIVERED -> order.deliveryStatus == OrderDeliveryStatus.DELIVERED
             }
 
-            val matchesSearch = if (currentSearch.isBlank()) {
+            val matchesSearch = if (query.isBlank()) {
                 true
             } else {
-                val q = currentSearch.trim().lowercase()
-                order.outletName.lowercase().contains(q) ||
-                        order.provisionalInvoiceNumber.lowercase().contains(q) ||
-                        (order.syncedInvoiceNumber?.lowercase()?.contains(q) == true)
+                order.outletName.lowercase().contains(query) ||
+                        order.provisionalInvoiceNumber.lowercase().contains(query) ||
+                        (order.syncedInvoiceNumber?.lowercase()?.contains(query) == true) ||
+                        order.outletId.lowercase().contains(query)
             }
 
             matchesFilter && matchesSearch
@@ -99,13 +97,17 @@ class OrdersViewModel(
 
         val pendingSync = allOrders.count { it.syncStatus != SyncStatus.SYNCED }
 
-        _uiState.value = OrdersUiState.Populated(
-            orders = allOrders,
-            filteredOrders = filtered,
-            selectedFilter = currentFilter,
-            searchQuery = currentSearch,
-            selectedOrder = activeSelectedOrder,
-            pendingSyncCount = pendingSync
-        )
+        _uiState.value = if (allOrders.isEmpty() && query.isBlank()) {
+            OrdersUiState.Empty
+        } else {
+            OrdersUiState.Populated(
+                orders = allOrders,
+                filteredOrders = filtered,
+                selectedFilter = currentFilter,
+                searchQuery = _searchQuery.value,
+                selectedOrder = activeSelectedOrder,
+                pendingSyncCount = pendingSync
+            )
+        }
     }
 }

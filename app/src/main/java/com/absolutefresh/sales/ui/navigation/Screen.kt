@@ -16,14 +16,15 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector?
     object Splash : Screen("splash", "Splash")
     object SignIn : Screen("sign_in", "Sign In")
 
-    // ── Rep Navigation Tabs (5 tabs per design spec) ─────────────────────────
+    // ── Rep Navigation Tabs (5 tabs) ─────────────────────────────────────────
     object Beat       : Screen("beat",    "Beat",    Icons.AutoMirrored.Filled.AltRoute)
-    object Orders     : Screen("orders",  "Orders",  Icons.Default.ShoppingCart)
+    object Finance    : Screen("finance", "Finance", Icons.Default.Payments)
     object Outlets    : Screen("outlets", "Outlets", Icons.Default.Store)
     object Stock      : Screen("stock",   "Stock",   Icons.Default.Inventory)
     object More       : Screen("more",    "More",    Icons.Default.MoreHoriz)
 
     // ── Rep Sub-screens (not in bottom nav) ──────────────────────────────────
+    object Orders        : Screen("orders",                  "Orders", Icons.Default.ShoppingCart)
     object TodaysVisit   : Screen("todays_visit/{outletId}", "Today's Visit")
     object NewOrder      : Screen("new_order/{outletId}",    "New Order")
     object AddOutlet     : Screen("add_outlet",              "Add Outlet")
@@ -48,6 +49,6 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector?
 }
 
 /** Bottom-nav tab sets for each role. */
-val repTabs    = listOf(Screen.Beat, Screen.Orders, Screen.Outlets, Screen.Stock, Screen.More)
+val repTabs    = listOf(Screen.Beat, Screen.Finance, Screen.Outlets, Screen.Stock, Screen.More)
 val driverTabs = listOf(Screen.Deliveries, Screen.DoneToday)
 

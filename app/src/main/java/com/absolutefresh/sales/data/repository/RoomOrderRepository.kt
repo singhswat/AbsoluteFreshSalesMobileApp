@@ -59,8 +59,32 @@ class RoomOrderRepository(
 
     override fun observeOrders(): Flow<List<FieldOrder>> {
         return orderDao.getAllOrders().map { list ->
-            list.map { it.toDomain() }
+            if (list.isEmpty()) {
+                seedInitialOrders()
+                orderDao.getAllOrders().first().map { it.toDomain() }
+            } else {
+                list.map { it.toDomain() }
+            }
         }
+    }
+
+    private suspend fun seedInitialOrders() {
+        val now = System.currentTimeMillis()
+        val seedOrders = listOf(
+            FieldOrderEntity("ord-1", "o1", "Sharma Kirana", "rep-1", 1142.86, 57.14, 1200.0, "CASH", "AFF-2610-001", "AFF-2610-001", "SYNCED", "DELIVERED", now - 86400000L, now - 86400000L),
+            FieldOrderEntity("ord-2", "o2", "Gupta Dairy & More", "rep-1", 428.57, 21.43, 450.0, "UPI", "AFF-2610-002", "AFF-2610-002", "SYNCED", "DELIVERED", now - 43200000L, now - 43200000L),
+            FieldOrderEntity("ord-3", "o4", "New Delhi Canteen", "rep-1", 3700.0, 185.0, 3885.0, "CREDIT", "AFF-2610-003", null, "PENDING", "PENDING", now - 7200000L, now - 7200000L),
+            FieldOrderEntity("ord-4", "o7", "Laxmi General Store", "rep-1", 2285.71, 114.29, 2400.0, "CASH", "AFF-2610-004", "AFF-2610-004", "SYNCED", "DELIVERED", now - 3600000L, now - 3600000L)
+        )
+        val seedItems = listOf(
+            OrderItemEntity(orderId = "ord-1", productId = "p2", productName = "Fresh Idli Dosa Batter 1kg", quantityPackets = 12, weightKg = 12.0, unitPrice = 85.0, lineTotal = 1020.0),
+            OrderItemEntity(orderId = "ord-1", productId = "p3", productName = "Podi Chutney 30g", quantityPackets = 6, weightKg = 0.18, unitPrice = 28.0, lineTotal = 168.0),
+            OrderItemEntity(orderId = "ord-2", productId = "p1", productName = "Fresh Idli Dosa Batter 500g", quantityPackets = 10, weightKg = 5.0, unitPrice = 45.0, lineTotal = 450.0),
+            OrderItemEntity(orderId = "ord-3", productId = "p2", productName = "Fresh Idli Dosa Batter 1kg", quantityPackets = 40, weightKg = 40.0, unitPrice = 85.0, lineTotal = 3400.0),
+            OrderItemEntity(orderId = "ord-4", productId = "p1", productName = "Fresh Idli Dosa Batter 500g", quantityPackets = 40, weightKg = 20.0, unitPrice = 45.0, lineTotal = 1800.0)
+        )
+        orderDao.insertOrders(seedOrders)
+        orderDao.insertOrderItems(seedItems)
     }
 
     override suspend fun getOrders(): List<FieldOrder> {

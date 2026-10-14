@@ -22,6 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Receipt
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
@@ -40,6 +41,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
@@ -85,7 +87,8 @@ fun OrdersScreen(
     viewModel: OrdersViewModel,
     modifier: Modifier = Modifier,
     onNavigateToNewOrder: () -> Unit = {},
-    onNavigateToInvoice: (String) -> Unit = {}
+    onNavigateToInvoice: (String) -> Unit = {},
+    onNavigateToHistory: (String) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var isSearchExpanded by remember { mutableStateOf(false) }
@@ -179,6 +182,10 @@ fun OrdersScreen(
                             onNavigateToInvoice = { orderId ->
                                 viewModel.selectOrder(null)
                                 onNavigateToInvoice(orderId)
+                            },
+                            onNavigateToHistory = { orderId ->
+                                viewModel.selectOrder(null)
+                                onNavigateToHistory(orderId)
                             }
                         )
                     }
@@ -486,7 +493,8 @@ private fun PaymentModeTag(mode: PaymentMode) {
 private fun OrderDetailSheet(
     order: FieldOrder,
     onClose: () -> Unit,
-    onNavigateToInvoice: (String) -> Unit = {}
+    onNavigateToInvoice: (String) -> Unit = {},
+    onNavigateToHistory: (String) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -605,6 +613,25 @@ private fun OrderDetailSheet(
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text("View Tax Invoice (चालान देखें)", fontWeight = FontWeight.Bold)
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        OutlinedButton(
+            onClick = { onNavigateToHistory(order.id) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp),
+            shape = RoundedCornerShape(8.dp),
+            colors = ButtonDefaults.outlinedButtonColors(contentColor = GreenPrimary)
+        ) {
+            Icon(
+                imageVector = Icons.Default.History,
+                contentDescription = null,
+                modifier = Modifier.size(18.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("Audit & History (संशोधन इतिहास)", fontWeight = FontWeight.Bold)
         }
 
         Spacer(modifier = Modifier.height(8.dp))

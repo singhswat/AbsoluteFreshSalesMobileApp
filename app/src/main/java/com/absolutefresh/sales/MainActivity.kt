@@ -20,8 +20,11 @@ import com.absolutefresh.sales.data.model.UserRole
 import com.absolutefresh.sales.data.repository.FakeAuthRepository
 import com.absolutefresh.sales.data.repository.FakeBeatRepository
 import com.absolutefresh.sales.data.repository.FakeBeatChangeRepository
+import com.absolutefresh.sales.data.repository.FakeOrderHistoryRepository
 import com.absolutefresh.sales.data.repository.FakeOrderRepository
 import com.absolutefresh.sales.data.repository.FakeOutletRepository
+import com.absolutefresh.sales.ui.orderhistory.OrderHistoryScreen
+import com.absolutefresh.sales.ui.orderhistory.OrderHistoryViewModel
 import com.absolutefresh.sales.ui.auth.SignInScreen
 import com.absolutefresh.sales.ui.auth.SignInScreenState
 import com.absolutefresh.sales.ui.auth.SignInViewModel
@@ -81,6 +84,7 @@ fun MainAppScaffold() {
     val outletRepo = androidx.compose.runtime.remember { FakeOutletRepository() }
     val orderRepo  = androidx.compose.runtime.remember { FakeOrderRepository() }
     val beatChangeRepo = androidx.compose.runtime.remember { FakeBeatChangeRepository() }
+    val orderHistoryRepo = androidx.compose.runtime.remember { FakeOrderHistoryRepository() }
 
     val userRole = (authState as? SignInScreenState.Authenticated)?.role ?: UserRole.REP
 
@@ -171,6 +175,9 @@ fun MainAppScaffold() {
                     },
                     onNavigateToInvoice = { orderId ->
                         navController.navigate(Screen.CreateInvoice.createRoute(orderId))
+                    },
+                    onNavigateToHistory = { orderId ->
+                        navController.navigate(Screen.OrderHistory.createRoute(orderId))
                     }
                 )
             }
@@ -254,6 +261,17 @@ fun MainAppScaffold() {
                 }
                 BeatChangeScreen(
                     viewModel = beatChangeViewModel,
+                    onNavigateBack = { navController.popBackStack() }
+                )
+            }
+
+            composable(Screen.OrderHistory.route) { backStackEntry ->
+                val orderId = backStackEntry.arguments?.getString("orderId") ?: ""
+                val historyViewModel = viewModel(key = "history_$orderId") {
+                    OrderHistoryViewModel(orderId, orderRepo, orderHistoryRepo)
+                }
+                OrderHistoryScreen(
+                    viewModel = historyViewModel,
                     onNavigateBack = { navController.popBackStack() }
                 )
             }

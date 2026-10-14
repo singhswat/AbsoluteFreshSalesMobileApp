@@ -10,6 +10,9 @@ import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 /**
  * Interface contract for remote backend operations.
@@ -27,9 +30,11 @@ interface NetworkDataSource {
 /**
  * Concrete implementation using the official Supabase Kotlin SDK.
  * Respects ADR-001 idempotency client_id side-column and optimistic concurrency sync_version.
+ * Includes a read-only safety lock when inspecting live production data.
  */
 class SupabaseNetworkDataSource(
-    private val client: SupabaseClient = SupabaseClientProvider.getClient()
+    private val client: SupabaseClient = SupabaseClientProvider.getClient(),
+    var isReadOnlyMode: Boolean = true // Default to true to protect live production data from accidental writes
 ) : NetworkDataSource {
 
     override suspend fun getBeats(repId: String, date: String): Result<List<BeatVisitDto>> = withContext(Dispatchers.IO) {
@@ -72,6 +77,17 @@ class SupabaseNetworkDataSource(
     }
 
     override suspend fun pushOrder(order: FieldOrderDto, items: List<FieldOrderItemDto>): Result<FieldOrderDto> = withContext(Dispatchers.IO) {
+        if (isReadOnlyMode) {
+            // Read-only safety guard: do not write to live production environment
+            val ym = SimpleDateFormat("yyMM", Locale.ENGLISH).format(Date())
+            return@withContext Result.success(
+                order.copy(
+                    id = "sim-${order.clientId.take(8)}",
+                    invoiceNumber = "AFF-$ym-${(100..999).random()}"
+                )
+            )
+        }
+
         runCatching {
             // 1. Insert order with client_id idempotency key
             val insertedOrder = client.postgrest["orders"].insert(order) {
@@ -90,6 +106,10 @@ class SupabaseNetworkDataSource(
     }
 
     override suspend fun pushOutlet(outlet: OutletDto): Result<OutletDto> = withContext(Dispatchers.IO) {
+        if (isReadOnlyMode) {
+            return@withContext Result.success(outlet.copy(id = "sim-${outlet.clientId?.take(8) ?: "out"}"))
+        }
+
         runCatching {
             client.postgrest["outlets"].upsert(outlet) {
                 select()
@@ -98,6 +118,10 @@ class SupabaseNetworkDataSource(
     }
 
     override suspend fun pushBeatVisit(beatVisit: BeatVisitDto): Result<BeatVisitDto> = withContext(Dispatchers.IO) {
+        if (isReadOnlyMode) {
+            return@withContext Result.success(beatVisit.copy(id = "sim-bv"))
+        }
+
         runCatching {
             client.postgrest["daily_beat_logs"].upsert(beatVisit) {
                 select()

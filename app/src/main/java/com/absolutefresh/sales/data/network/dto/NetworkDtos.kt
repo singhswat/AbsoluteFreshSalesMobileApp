@@ -26,12 +26,12 @@ data class OutletDto(
 @Serializable
 data class BeatVisitDto(
     @SerialName("id") val id: String? = null,
-    @SerialName("rep") val rep: String,
-    @SerialName("date") val date: String,
-    @SerialName("outlet_id") val outletId: String,
+    @SerialName("rep") val rep: String = "",
+    @SerialName("date") val date: String = "",
+    @SerialName("outlet_id") val outletId: String = "",
     @SerialName("outlet_name") val outletName: String? = null,
     @SerialName("area") val area: String? = null,
-    @SerialName("sequence") val sequence: Int,
+    @SerialName("sequence") val sequence: Int = 1,
     @SerialName("target_kg") val targetKg: Double = 0.0,
     @SerialName("status") val status: String = "PLANNED",
     @SerialName("linked_order") val linkedOrder: String? = null,

@@ -7,4 +7,5 @@
     <color name="error">#DC2626</color>
     <color name="background">#FBF8FF</color>
     <color name="surface">#FBF8FF</color>
+    <color name="white">#FFFFFF</color>
 </resources>

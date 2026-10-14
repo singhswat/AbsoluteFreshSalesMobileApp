@@ -77,6 +77,10 @@ android {
     }
 }
 
+base {
+    archivesName.set("Absolute-Fresh-Sales")
+}
+
 dependencies {
     val composeBom = platform("androidx.compose:compose-bom:2024.09.00")
     implementation(composeBom)

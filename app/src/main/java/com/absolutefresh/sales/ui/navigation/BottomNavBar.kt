@@ -7,12 +7,10 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.absolutefresh.sales.data.model.UserRole
 import com.absolutefresh.sales.ui.theme.GreenPrimary
 import com.absolutefresh.sales.ui.theme.GreenPrimaryFixed
-import com.absolutefresh.sales.ui.theme.OnSurfaceText
 import com.absolutefresh.sales.ui.theme.OnSurfaceVariantText
 import com.absolutefresh.sales.ui.theme.SurfaceContainer
 
@@ -23,11 +21,7 @@ fun BottomNavBar(
     onNavigateTo: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val items = if (userRole == UserRole.DRIVER) {
-        listOf(Screen.Deliveries, Screen.DoneToday)
-    } else {
-        listOf(Screen.Beat, Screen.Orders, Screen.Cash, Screen.Stock)
-    }
+    val items = if (userRole == UserRole.DRIVER) driverTabs else repTabs
 
     NavigationBar(
         modifier = modifier,

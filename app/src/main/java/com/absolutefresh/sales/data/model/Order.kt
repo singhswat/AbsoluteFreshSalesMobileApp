@@ -25,9 +25,17 @@ data class OrderItem(
     val lineTotal: Double
 )
 
+enum class OrderDeliveryStatus {
+    PENDING,
+    DISPATCHED,
+    DELIVERED,
+    CANCELLED
+}
+
 data class FieldOrder(
     val id: String,
     val outletId: String,
+    val outletName: String = "",
     val repId: String,
     val items: List<OrderItem>,
     val subtotal: Double,
@@ -37,6 +45,7 @@ data class FieldOrder(
     val provisionalInvoiceNumber: String,
     val syncedInvoiceNumber: String? = null,
     val syncStatus: SyncStatus = SyncStatus.PENDING,
+    val deliveryStatus: OrderDeliveryStatus = OrderDeliveryStatus.PENDING,
     val createdAt: Long = System.currentTimeMillis()
 )
 

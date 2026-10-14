@@ -128,4 +128,8 @@ class SignInViewModel(
     fun retryFromOffline() {
         _uiState.value = SignInScreenState.Form()
     }
+
+    fun signOut() {
+        _uiState.value = SignInScreenState.Form()
+    }
 }

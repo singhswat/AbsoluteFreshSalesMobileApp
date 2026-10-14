@@ -38,8 +38,10 @@ fun AbsoluteFreshSalesTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
+            val insetsController = WindowCompat.getInsetsController(window, view)
+            @Suppress("DEPRECATION")
+            window.statusBarColor = colorScheme.primary.toArgb() // pre-35 compat; migrate to WindowInsetsController when minSdk >= 35
+            insetsController.isAppearanceLightStatusBars = false
         }
     }
 

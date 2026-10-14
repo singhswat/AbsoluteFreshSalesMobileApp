@@ -18,17 +18,36 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.absolutefresh.sales.data.model.UserRole
 import com.absolutefresh.sales.data.repository.FakeAuthRepository
+import com.absolutefresh.sales.data.repository.FakeBeatRepository
+import com.absolutefresh.sales.data.repository.FakeOrderRepository
+import com.absolutefresh.sales.data.repository.FakeOutletRepository
 import com.absolutefresh.sales.ui.auth.SignInScreen
 import com.absolutefresh.sales.ui.auth.SignInScreenState
 import com.absolutefresh.sales.ui.auth.SignInViewModel
+import com.absolutefresh.sales.ui.beat.BeatScreen
+import com.absolutefresh.sales.ui.beat.BeatViewModel
 import com.absolutefresh.sales.ui.navigation.BottomNavBar
 import com.absolutefresh.sales.ui.navigation.Screen
+import com.absolutefresh.sales.ui.navigation.repTabs
+import com.absolutefresh.sales.ui.more.MoreScreen
+import com.absolutefresh.sales.ui.more.MoreViewModel
+import com.absolutefresh.sales.data.repository.FakeDeliveryRepository
+import com.absolutefresh.sales.ui.driver.DeliveriesScreen
+import com.absolutefresh.sales.ui.driver.DeliveriesViewModel
+import com.absolutefresh.sales.ui.driver.DoneTodayScreen
+import com.absolutefresh.sales.ui.orders.OrdersScreen
+import com.absolutefresh.sales.ui.orders.OrdersViewModel
+import com.absolutefresh.sales.ui.outlets.OutletsScreen
+import com.absolutefresh.sales.ui.outlets.OutletsViewModel
 import com.absolutefresh.sales.ui.splash.SplashScreen
+import com.absolutefresh.sales.ui.stock.StockScreen
+import com.absolutefresh.sales.ui.stock.StockViewModel
 import com.absolutefresh.sales.ui.theme.AbsoluteFreshSalesTheme
+import com.absolutefresh.sales.ui.visit.TodaysVisitScreen
+import com.absolutefresh.sales.ui.visit.TodaysVisitViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Install Android 12+ Core Splash Screen before super.onCreate
         installSplashScreen()
         super.onCreate(savedInstanceState)
         setContent {
@@ -41,17 +60,23 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainAppScaffold() {
-    val navController = rememberNavController()
+    val navController     = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route ?: Screen.Splash.route
+    val currentRoute      = navBackStackEntry?.destination?.route ?: Screen.Splash.route
 
-    // Auth state and session management
-    val fakeRepo = FakeAuthRepository()
+    val fakeRepo      = FakeAuthRepository()
     val authViewModel = viewModel { SignInViewModel(fakeRepo) }
-    val authState by authViewModel.uiState.collectAsState()
+    val authState     by authViewModel.uiState.collectAsState()
+
+    val deliveryRepo    = androidx.compose.runtime.remember { FakeDeliveryRepository() }
+    val driverViewModel = viewModel { DeliveriesViewModel(deliveryRepo) }
 
     val userRole = (authState as? SignInScreenState.Authenticated)?.role ?: UserRole.REP
-    val showBottomBar = currentRoute != Screen.Splash.route && currentRoute != Screen.SignIn.route
+
+    // Bottom bar visible only on top-level tab destinations.
+    val bottomBarRoutes = repTabs.map { it.route } +
+            listOf(Screen.Deliveries.route, Screen.DoneToday.route)
+    val showBottomBar = currentRoute in bottomBarRoutes
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -59,11 +84,12 @@ fun MainAppScaffold() {
             if (showBottomBar) {
                 BottomNavBar(
                     currentRoute = currentRoute,
-                    userRole = userRole,
+                    userRole     = userRole,
                     onNavigateTo = { route ->
                         navController.navigate(route) {
                             launchSingleTop = true
-                            restoreState = true
+                            restoreState    = true
+                            popUpTo(navController.graph.startDestinationId) { saveState = true }
                         }
                     }
                 )
@@ -71,19 +97,20 @@ fun MainAppScaffold() {
         }
     ) { innerPadding ->
         NavHost(
-            navController = navController,
+            navController    = navController,
             startDestination = Screen.Splash.route,
-            modifier = Modifier.padding(innerPadding)
+            modifier         = Modifier.padding(innerPadding)
         ) {
+            // ── Auth ──────────────────────────────────────────────────────────
             composable(Screen.Splash.route) {
                 SplashScreen(
-                    authState = authState,
-                    onNavigateToSignIn = {
+                    authState              = authState,
+                    onNavigateToSignIn     = {
                         navController.navigate(Screen.SignIn.route) {
                             popUpTo(Screen.Splash.route) { inclusive = true }
                         }
                     },
-                    onNavigateToBeat = {
+                    onNavigateToBeat       = {
                         navController.navigate(Screen.Beat.route) {
                             popUpTo(Screen.Splash.route) { inclusive = true }
                         }
@@ -95,10 +122,11 @@ fun MainAppScaffold() {
                     }
                 )
             }
+
             composable(Screen.SignIn.route) {
                 SignInScreen(
-                    viewModel = authViewModel,
-                    onNavigateToBeat = {
+                    viewModel              = authViewModel,
+                    onNavigateToBeat       = {
                         navController.navigate(Screen.Beat.route) {
                             popUpTo(Screen.SignIn.route) { inclusive = true }
                         }
@@ -110,24 +138,78 @@ fun MainAppScaffold() {
                     }
                 )
             }
+
+            // ── Rep top-level tabs ────────────────────────────────────────────
             composable(Screen.Beat.route) {
-                // Beat Screen destination (FS-01/02)
-                androidx.compose.material3.Text("Today's Beat (Lucknow East)")
+                val beatViewModel = viewModel { BeatViewModel(FakeBeatRepository()) }
+                BeatScreen(
+                    beatViewModel = beatViewModel,
+                    onOutletClick = { outletId ->
+                        navController.navigate("todays_visit/$outletId")
+                    }
+                )
             }
+
             composable(Screen.Orders.route) {
-                androidx.compose.material3.Text("My Orders & Drafts")
+                val ordersViewModel = viewModel { OrdersViewModel(FakeOrderRepository()) }
+                OrdersScreen(
+                    viewModel = ordersViewModel,
+                    onNavigateToNewOrder = {
+                        // TODO: Navigate to new order
+                    }
+                )
             }
-            composable(Screen.Cash.route) {
-                androidx.compose.material3.Text("Cash Collections Register")
+
+            composable(Screen.Outlets.route) {
+                val outletsViewModel = viewModel { OutletsViewModel(FakeOutletRepository()) }
+                OutletsScreen(
+                    viewModel = outletsViewModel,
+                    onNavigateToNewOrder = { outletId ->
+                        // navigate to new order
+                    }
+                )
             }
+
             composable(Screen.Stock.route) {
-                androidx.compose.material3.Text("Van Stock & Freshness Settlement")
+                val stockViewModel = viewModel { StockViewModel() }
+                StockScreen(viewModel = stockViewModel)
             }
+
+            composable(Screen.More.route) {
+                val moreViewModel = viewModel { MoreViewModel() }
+                MoreScreen(
+                    viewModel = moreViewModel,
+                    onSignOut = {
+                        authViewModel.signOut()
+                        navController.navigate(Screen.SignIn.route) {
+                            popUpTo(0) { inclusive = true }
+                        }
+                    }
+                )
+            }
+
+            // ── Rep sub-screens (no bottom bar) ───────────────────────────────
+            composable("todays_visit/{outletId}") { backStackEntry ->
+                val outletId = backStackEntry.arguments?.getString("outletId") ?: ""
+                val visitViewModel = viewModel(key = outletId) {
+                    TodaysVisitViewModel(outletId, FakeOutletRepository())
+                }
+                TodaysVisitScreen(
+                    viewModel = visitViewModel,
+                    onNavigateBack = { navController.popBackStack() },
+                    onNavigateToNewOrder = { id ->
+                        // TODO: Navigate to new order
+                    }
+                )
+            }
+
+            // ── Driver top-level tabs ─────────────────────────────────────────
             composable(Screen.Deliveries.route) {
-                androidx.compose.material3.Text("Driver Deliveries Worklist")
+                DeliveriesScreen(viewModel = driverViewModel)
             }
+
             composable(Screen.DoneToday.route) {
-                androidx.compose.material3.Text("Deliveries Completed Today")
+                DoneTodayScreen(viewModel = driverViewModel)
             }
         }
     }

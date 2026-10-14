@@ -26,6 +26,8 @@ import com.absolutefresh.sales.ui.auth.SignInScreenState
 import com.absolutefresh.sales.ui.auth.SignInViewModel
 import com.absolutefresh.sales.ui.beat.BeatScreen
 import com.absolutefresh.sales.ui.beat.BeatViewModel
+import com.absolutefresh.sales.ui.invoice.InvoiceScreen
+import com.absolutefresh.sales.ui.invoice.InvoiceViewModel
 import com.absolutefresh.sales.ui.navigation.BottomNavBar
 import com.absolutefresh.sales.ui.navigation.Screen
 import com.absolutefresh.sales.ui.navigation.repTabs
@@ -162,6 +164,9 @@ fun MainAppScaffold() {
                     viewModel = ordersViewModel,
                     onNavigateToNewOrder = {
                         navController.navigate("new_order/o1")
+                    },
+                    onNavigateToInvoice = { orderId ->
+                        navController.navigate(Screen.CreateInvoice.createRoute(orderId))
                     }
                 )
             }
@@ -222,6 +227,17 @@ fun MainAppScaffold() {
                             popUpTo(Screen.Beat.route)
                         }
                     }
+                )
+            }
+
+            composable(Screen.CreateInvoice.route) { backStackEntry ->
+                val orderId = backStackEntry.arguments?.getString("orderId") ?: ""
+                val invoiceViewModel = viewModel(key = "invoice_$orderId") {
+                    InvoiceViewModel(orderId, orderRepo, outletRepo)
+                }
+                InvoiceScreen(
+                    viewModel = invoiceViewModel,
+                    onNavigateBack = { navController.popBackStack() }
                 )
             }
 

@@ -29,6 +29,8 @@ val SurfaceContainerHighest = Color(0xFFE3E1EC)
 
 val OnSurfaceText = Color(0xFF1A1B22)
 val OnSurfaceVariantText = Color(0xFF404940)
+val TextPrimary = OnSurfaceText
+val TextSecondary = OnSurfaceVariantText
 val BorderSubtle = Color(0xFFE2E8F0)
 
 // Freshness / Shelf-life Decay System (10-day window)

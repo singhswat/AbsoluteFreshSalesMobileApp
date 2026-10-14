@@ -27,8 +27,9 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector?
     object TodaysVisit   : Screen("todays_visit/{outletId}", "Today's Visit")
     object NewOrder      : Screen("new_order/{outletId}",    "New Order")
     object AddOutlet     : Screen("add_outlet",              "Add Outlet")
-    object Invoices      : Screen("invoices",                "My Invoices")
-    object CreateInvoice : Screen("create_invoice",          "Create Invoice")
+    object CreateInvoice : Screen("create_invoice/{orderId}", "Tax Invoice") {
+        fun createRoute(orderId: String) = "create_invoice/$orderId"
+    }
     object Cash          : Screen("cash",                    "Cash")
     object BeatChange    : Screen("beat_change",             "Suggest Change")
     object HolidayCal    : Screen("holiday_calendar",        "Holidays")

@@ -27,6 +27,8 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -82,7 +84,8 @@ import java.time.format.DateTimeFormatter
 fun OrdersScreen(
     viewModel: OrdersViewModel,
     modifier: Modifier = Modifier,
-    onNavigateToNewOrder: () -> Unit = {}
+    onNavigateToNewOrder: () -> Unit = {},
+    onNavigateToInvoice: (String) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var isSearchExpanded by remember { mutableStateOf(false) }
@@ -172,7 +175,11 @@ fun OrdersScreen(
                     ) {
                         OrderDetailSheet(
                             order = selectedOrder,
-                            onClose = { viewModel.selectOrder(null) }
+                            onClose = { viewModel.selectOrder(null) },
+                            onNavigateToInvoice = { orderId ->
+                                viewModel.selectOrder(null)
+                                onNavigateToInvoice(orderId)
+                            }
                         )
                     }
                 }
@@ -478,7 +485,8 @@ private fun PaymentModeTag(mode: PaymentMode) {
 @Composable
 private fun OrderDetailSheet(
     order: FieldOrder,
-    onClose: () -> Unit
+    onClose: () -> Unit,
+    onNavigateToInvoice: (String) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -581,6 +589,25 @@ private fun OrderDetailSheet(
         }
 
         Spacer(modifier = Modifier.height(20.dp))
+
+        Button(
+            onClick = { onNavigateToInvoice(order.id) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp),
+            shape = RoundedCornerShape(8.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = GreenPrimary)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Receipt,
+                contentDescription = null,
+                modifier = Modifier.size(18.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("View Tax Invoice (चालान देखें)", fontWeight = FontWeight.Bold)
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
 
         TextButton(
             onClick = onClose,
